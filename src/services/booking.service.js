@@ -7,10 +7,18 @@ const bookLiveEvent = (user, eventId,quantity) => {
   if (!event) throw new Error("Event to book does not exist");
   if (event.hyrja == 0) {
   } else {
+    const total_amount= quantity*event.hyrja;
+
+    const booking = new Booking({
+          event,
+          user,
+          total_amount,
+          quantity
+    })
   }
 
 
-  return bookingDb;
+  return booking;
 };
 
 const createCheckout = async (bookings,user)=>{
