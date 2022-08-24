@@ -8,20 +8,26 @@ const bookLiveEvent = (user, eventId,quantity) => {
   if (event.hyrja == 0) {
   } else {
   }
-  const bookingDb = booking.create({
-    event: event,
-    user: user,
-    quantity:quantity
-  });
+
 
   return bookingDb;
 };
 
-const createCheckout = async (bookings)=>{
-const session = await stripe.checkout.sessions.create({
-    payment_method_types:['card'],
-    line_items:
-})
+const createCheckout = async (bookings,user)=>{
+// const session = await stripe.checkout.sessions.create({
+//     payment_method_types:['card'],
+//     line_items:
+// })
+try{
+    const costumer = await stripe.customers.create({
+        email:user.email,
+        source:user.id
+    })
+
+    const payment= await stripe.chargers.create({
+
+    })
+}
 }
 
 const bookOnlineEvent = (user, event) => {};
