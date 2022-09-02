@@ -6,14 +6,14 @@ const createEvent = (event, userId,image,fakultetiId) => {
   } else event.Lloji_Eventit = Event.schema.path("Lloji_Eventit").enumValues[1];
 
   const event1 = new Event({
-    emri: event.emri,
-    Lloji_Eventit: event.Lloji_Eventit,
-    numri_max_pjesemarresve: event.numri_max_pjesemarresve,
-    hyrja: event.hyrja,
+    name: event.name,
+    event_type: event.event_type,
+    max_participants: event.max_participants,
+    fee: event.fee,
     event_link: event.event_link,
     created_By:userId,
-    imazhi: image,
-    fakulteti:fakultetiId
+    image: image,
+    faculty:fakultetiId
   });
   event1
     .save()
@@ -32,6 +32,10 @@ const getEvent = async (userId) => {
   });
   return event;
 };
+const getEventDetails = async (eventId) => {
+  const event = Event.findById(eventId);
+  return event;
+};
 
 const UpdateEvent = async (data,eventId) => {
   const event = await Event.findOneAndUpdate(
@@ -45,4 +49,4 @@ const UpdateEvent = async (data,eventId) => {
 
 
 
-module.exports = { createEvent, getEvent ,UpdateEvent};
+module.exports = { createEvent, getEvent ,UpdateEvent,getEventDetails};

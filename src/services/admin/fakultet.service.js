@@ -18,4 +18,8 @@ const createFakultet =async (fakultet)=>{
     }
 }
 
-module.exports={createFakultet}
+const getAllFaculty =()=>{
+  return Fakultet.find({});
+}
+
+module.exports={createFakultet,getAllFaculty}

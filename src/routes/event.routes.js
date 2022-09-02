@@ -7,6 +7,6 @@ const AuthMiddleware = require('../middleware/auth.middleware');
 
 
 route.get('/',AuthMiddleware.verifyToken,EventController.getEvent)
-route.post('/uploads',upload,uploadController.uploadImage)
+route.get('details/:eventId',EventController.getEventDetails);
 route.post('/:fakultetId',AuthMiddleware.verifyToken,upload,EventController.addEvent)
 module.exports=route;

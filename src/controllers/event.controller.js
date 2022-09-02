@@ -14,3 +14,8 @@ console.log(event)
 res.send(event)
 
 }
+
+exports.getEventDetails = async (req,res)=>{
+  const event =await EventService.getEventDetails(req.params.eventId)
+  res.send(event);
+}

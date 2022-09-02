@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
 const eventSchema = new mongoose.Schema({
-  emri: {
+  name: {
     type: String,
     required: true,
   },
-  pershkrimi: {
+  description: {
     type: String,
   },
   Created_At: {
@@ -12,37 +12,37 @@ const eventSchema = new mongoose.Schema({
     default: Date.now(),
     required: true,
   },
-  data_fillimit:{
+  start_date:{
     type:Date
   },
   created_By: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "users",
   },
-  Lloji_Eventit: {
+  event_type: {
     type: String,
     enum: ["online", "live"],
     required: true,
   },
-  numri_max_pjesemarresve: {
+  max_participants: {
     type: Number,
   },
-  hyrja: {
+  fee: {
     type: Number,
     required: true,
   },
   event_link: {
     type: String,
   },
-  imazhi: {
+  image: {
     type: String,
     required:true
   },
-  fakulteti: {
+  faculty: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "fakultets",
   },
-  pjesemarres: [{
+  participants: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: "bookings",
   }],

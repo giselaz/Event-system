@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
-  emri: {
+  name: {
     type: String,
   },
-  mbiemri: {
+  surname: {
     type: String,
   },
   email: {
@@ -35,7 +35,7 @@ const userSchema = new mongoose.Schema({
       ref: "Event",
     },
   ],
-  fakulteti: {
+  faculty: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "fakultets",
   },
