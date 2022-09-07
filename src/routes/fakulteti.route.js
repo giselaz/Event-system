@@ -7,7 +7,7 @@ var route = express.Router();
 const EventController = require('../controllers/event.controller')
 
 
-//Create an event 
+
 route.post('/:fakultetId/events',AuthMiddleware.verifyToken,upload,EventController.addEvent)
 //Get events by fakultyId
 route.post('/:fakultetId/events',AuthMiddleware.verifyToken,upload,EventController.getEventByFacultyId)
