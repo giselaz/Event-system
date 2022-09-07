@@ -22,4 +22,5 @@ const getAllFaculty =()=>{
   return Fakultet.find({});
 }
 
+
 module.exports={createFakultet,getAllFaculty}

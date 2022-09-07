@@ -19,3 +19,12 @@ exports.getEventDetails = async (req,res)=>{
   const event =await EventService.getEventDetails(req.params.eventId)
   res.send(event);
 }
+
+exports.getEventByFacultyId = async (req,res)=>{
+  try{
+    const events = await EventService.getEventOfFaculty(req.params.facultyId)
+return res.status(200).json({message:events})
+  }catch(error){
+    return res.status(400).json({message:error})
+  }
+}

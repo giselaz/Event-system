@@ -19,7 +19,7 @@ const bookLiveEvent = (user, eventId,quantity) => {
     quantity
 })
 booking.save().then(() => {
-    console.log("Created Event");
+    console.log("Created Booking");
   }).catch((err) => {
     console.log(err);})
 

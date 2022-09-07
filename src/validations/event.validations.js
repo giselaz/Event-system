@@ -2,12 +2,12 @@ const Joi = require('joi');
 
 
 const validateCreatedEvent =(body)=>{
-    const schema = joi.object({
-        emri:Joi.string().min(3).required(),
-        pershkrimi:Joi.string().min(10),
-        Lloji_Eventit:Joi.string().valid('live','online'),
-        hyrja:Joi.number().min(0),
-        data_fillimit:Joi.date().format("DD/MM/YYYY")
+    const schema = Joi.object({
+        name:Joi.string().min(3).required(),
+        description:Joi.string().min(10),
+        event_type:Joi.string().valid('live','online'),
+        fee:Joi.number().min(0),
+        start_date:Joi.date().format("DD-MM-YYYY")
     })
 }
 

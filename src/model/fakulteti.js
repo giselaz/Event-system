@@ -9,6 +9,16 @@ const fakultetiSchema = new mongoose.Schema({
   pershkrimi:{
     type:String
   },
+  logo:{
+    type:String,
+    required:true
+  }
+  // events: [
+  //   {
+  //     type: mongoose.Schema.Types.ObjectId,
+  //     ref: "Event",
+  //   },
+  // ],
 
 })
 

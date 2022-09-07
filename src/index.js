@@ -4,7 +4,7 @@ const dotenv = require('dotenv');
  const generateTicket =require('./utils/generatePdf')
 dotenv.config();
 const mongoose = require('mongoose');
-const EventRoute =require('./routes/event.routes');
+// const EventRoute =require('./routes/event.routes');
 const UserRoute = require('./routes/user.route')
 const AuthRoute = require('./routes/auth.route')
 const FakultetRoute=require('./routes/fakulteti.route')
@@ -16,7 +16,7 @@ const app = express();
 app.use(express.json());
 
 
-app.use('/events',EventRoute)
+// app.use('/events',EventRoute)
 app.use('/users',UserRoute)
 app.use('/auth',AuthRoute)
 app.use('/fakultet',FakultetRoute)

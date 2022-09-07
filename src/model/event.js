@@ -41,11 +41,7 @@ const eventSchema = new mongoose.Schema({
   faculty: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "fakultets",
-  },
-  participants: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "bookings",
-  }],
+  }
 });
 const Event = mongoose.model("Event", eventSchema);
 

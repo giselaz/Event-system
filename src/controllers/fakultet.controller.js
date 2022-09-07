@@ -7,10 +7,15 @@ const postFakultet = async (req, res) => {
 
     res.send(fakultet);
 }
+const getAllFaculties = async (req, res) => {
+    try {
+        const faculties = await FakultetService.getAllFaculty();
+        return res.json(faculties);
+    } catch (error) {
+        return res.send(400).json({ message: error })
+    }
 
-const getAllFaculties = async (req,res)=>{
-    const faculties = await FakultetService.getAllFaculty();
-    
-    res.send(faculties);
+
 }
-module.exports = { postFakultet }
+
+module.exports = { postFakultet, getAllFaculties, }

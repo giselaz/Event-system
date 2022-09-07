@@ -1,6 +1,6 @@
 const Event = require("../../model/event");
 
-const createEvent = (event, userId,image,fakultetiId) => {
+const createEvent = (event, userId, image, fakultetiId) => {
   if (event.Lloji_Eventit == "online") {
     event.Lloji_Eventit = Event.schema.path("Lloji_Eventit").enumValues[0];
   } else event.Lloji_Eventit = Event.schema.path("Lloji_Eventit").enumValues[1];
@@ -11,9 +11,9 @@ const createEvent = (event, userId,image,fakultetiId) => {
     max_participants: event.max_participants,
     fee: event.fee,
     event_link: event.event_link,
-    created_By:userId,
+    created_By: userId,
     image: image,
-    faculty:fakultetiId
+    faculty: fakultetiId
   });
   event1
     .save()
@@ -23,7 +23,7 @@ const createEvent = (event, userId,image,fakultetiId) => {
     .catch((err) => {
       console.log(err);
     });
-    Event.find().populate('created_By')
+  Event.find().populate('created_By')
 };
 
 const getEvent = async (userId) => {
@@ -32,12 +32,18 @@ const getEvent = async (userId) => {
   });
   return event;
 };
+const getEventOfFaculty = async(facultyId) => {
+const events= await Event.find({
+  faculty:facultyId
+})
+return events;
+}
 const getEventDetails = async (eventId) => {
   const event = Event.findById(eventId);
   return event;
 };
 
-const UpdateEvent = async (data,eventId) => {
+const UpdateEvent = async (data, eventId) => {
   const event = await Event.findOneAndUpdate(
     { id: eventId },
     data,
@@ -49,4 +55,4 @@ const UpdateEvent = async (data,eventId) => {
 
 
 
-module.exports = { createEvent, getEvent ,UpdateEvent,getEventDetails};
+module.exports = { createEvent, getEvent, UpdateEvent, getEventDetails,getEventOfFaculty };
