@@ -4,6 +4,7 @@ const ValidateUser = require('../validations/user.validation')
 
 
 const userLogin = async (req,res)=>{
+    await ValidateUser.validateLogin(req.body)
     const tokens= await AuthService.logIn(req.body);
   return  res
       .header("Authorization", tokens.access_token)
@@ -11,6 +12,7 @@ const userLogin = async (req,res)=>{
       .status(200)
       .json({ message: "Registration successfully." });
 }
+
 
 const userLogOut=async (req,res)=>{
 const refreshToken = req.header("refreshToken");

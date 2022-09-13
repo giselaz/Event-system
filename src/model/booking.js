@@ -12,8 +12,9 @@ const bookingSchema = new mongoose.Schema({
     required:true
     },
     date:{
-        type:Date,
-        required:true
+        type: Date,
+        default: Date.now(),
+        required: true,
     },
     status:{
         type:String,
@@ -28,7 +29,11 @@ const bookingSchema = new mongoose.Schema({
     total_amount:{
         type:Number
     },
-    timestamps:true
+    transactionid:{
+        type:String
+    },
+    
+
 
 })
 

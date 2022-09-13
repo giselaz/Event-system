@@ -20,7 +20,7 @@ const logIn = async (user) => {
 
   const refreshDB = await refreshToken.create({
     token: refresh_Token,
-    user_id: payload.id,
+    user_id: payload._id,
     
   });
   refreshDB
@@ -44,7 +44,7 @@ const validateUser = async (user) => {
     throw new Error("User does not exist");
   } else if (dbUser && bcrypt.compareSync(user.password, dbUser.password)) {
     const userLog = {
-      id: dbUser.id,
+      _id: dbUser._id,
       email: dbUser.email,
       role:dbUser.userType
     };

@@ -1,45 +1,46 @@
 const uuid = require('uuid')
 const Booking = require("../model/booking");
 const Event = require("../model/event");
-const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY);
+const User = require("../model/user")
+const stripe = require("stripe")("sk_test_51LaIrHL4LctRSxODoNdV7NbAaxOtllHudT8wPKPWcwKioMoRfnrrski7TS8h1CMVm6QNmkPSDD5C2Yl66zBrEZqx00lcPHW2zX");
 
-const bookLiveEvent = (user, eventId,quantity) => {
-  const event = Event.findById(eventId);
-  if (!event) throw new Error("Event to book does not exist");
-  if (event.hyrja == 0) {
-    
-  } else {
-   
-  }
-  const total_amount= quantity*event.hyrja;
-  const booking = new Booking({
-    event,
-    user,
-    total_amount,
-    quantity
+const bookLiveEvent = async (user, eventId,quantity,token) => {
+  const event = await Event.findById(eventId);
+  const userDb = await User.findOne({_id:user._id});
+const foundBooking = userDb.bookings.find((booking)=>{
+    if(booking.event==eventId)
+    return booking;
 })
-booking.save().then(() => {
-    console.log("Created Event");
-  }).catch((err) => {
-    console.log(err);})
+  if(foundBooking || !event){
+    throw new Error(' You cannot book event')
+  }
+  if(event.fee==0){
+    const amount =0;
+    const booking = new Booking({
+      event:eventId,
+      user:user._id,
+      total_amount:amount,
+      quantity
+  })
+  booking.save().then(() => {
+      console.log("Created Booking");
+    }).catch((err) => {
+      console.log(err);})
+  
+      // booking.populate([{ path: "event", strictPopulate: false }])
+        userDb.bookings.push(booking);
+        userDb.save();
+      return booking;
+  }else{
 
-Booking.find().populate('event').exec();
-  return booking;
-};
-
-const createCheckout = async (bookings,user)=>{
-// const session = await stripe.checkout.sessions.create({
-//     payment_method_types:['card'],
-//     line_items:
-// })
 try{
     const costumer = await stripe.customers.create({
         email:user.email,
-        source:user.id
+        source:token.id
     })
-
+console.log(costumer)
     const payment= await stripe.chargers.create({
-        amount:bookings.total_amount*100,
+        amount:quantity*event.fee*100,
         costumer:costumer.id,
         currency: "ALL",
         receipt_email:user.email
@@ -47,7 +48,30 @@ try{
     {
         idempotencyKey:uuid()
     })
+
+    if(payment){
+        const booking = new Booking({
+            event:eventId,
+            user:user._id,
+            total_amount:payment.amount,
+            quantity,
+            transactionid: uuid(),
+        })
+        (await booking.save()).populate('events').execPopulate();
+        userDb.bookings.push(booking);
+        userDb.save();
+        return booking;
+    }
+}catch(error){
+        return error;
 }
 }
+  
+
+  }
+   
+
 
 const bookOnlineEvent = (user, event) => {};
+
+module.exports ={bookLiveEvent}

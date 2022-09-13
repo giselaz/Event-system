@@ -4,22 +4,23 @@ const dotenv = require('dotenv');
  const generateTicket =require('./utils/generatePdf')
 dotenv.config();
 const mongoose = require('mongoose');
-const EventRoute =require('./routes/event.routes');
 const UserRoute = require('./routes/user.route')
 const AuthRoute = require('./routes/auth.route')
 const FakultetRoute=require('./routes/fakulteti.route')
+const BookingRoute = require('./routes/booking.route')
 const Dbconnect =require('./utils/db')
 const app = express();
 
 
-
+const port = process.env.PORT
 app.use(express.json());
 
 
-app.use('/events',EventRoute)
+// app.use('/events',EventRoute)
 app.use('/users',UserRoute)
 app.use('/auth',AuthRoute)
 app.use('/fakultet',FakultetRoute)
+app.use('/bookings',BookingRoute)
 app.use('/images',express.static(path.join(__dirname,'images')))
 
 app.get('/file/:eventId',async(req,res)=>{
@@ -32,6 +33,6 @@ app.get('/file/:eventId',async(req,res)=>{
    const doc= await generateTicket(req.params.eventId);
   
 })
-app.listen(4000, () => {
-    console.log(`Server Started at ${4000}`)
+app.listen(4000 || port, () => {
+    console.log(`Server Started at ${port}`)
 })

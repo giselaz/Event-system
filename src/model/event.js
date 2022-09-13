@@ -13,7 +13,12 @@ const eventSchema = new mongoose.Schema({
     required: true,
   },
   start_date:{
-    type:Date
+    type:String,
+    min: [new Date(), "can't be before now!!"],
+  },
+  end_date:{
+    type:String,
+    
   },
   created_By: {
     type: mongoose.Schema.Types.ObjectId,

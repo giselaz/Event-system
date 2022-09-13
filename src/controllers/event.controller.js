@@ -1,11 +1,11 @@
 const EventService = require('../services/admin/event.service')
 const {validateCreatedEvent} = require('../validations/event.validations')
-
-exports.addEvent = async (req,res,next)=>{
-console.log(req.body.data_fillimit);
+const moment = require('moment')
+exports.addEvent = async (req,res)=>{
+  console.log(req.file.path)
   await validateCreatedEvent(req.body)
-  const event = await EventService.createEvent(req.body,req.user.id,req.file.path,req.params.fakultetId)
-  res.send(event)
+  const event = await EventService.createEvent(req.body,req.user._id,req.file.path,req.params.fakultetId)
+  res.status(200).json({message:event})
 }
 
 exports.getEvent=async (req,res)=>{

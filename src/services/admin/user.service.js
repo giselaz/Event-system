@@ -8,8 +8,8 @@ const CreateUser = async (user) => {
     const salt = await bcrypt.genSalt(10);
 
     const userDb = new User({
-      emri: user.emri,
-      mbiemri: user.mbiemri,
+      name: user.name,
+      surname: user.surname,
       email: user.email,
       password: user.password,
     });

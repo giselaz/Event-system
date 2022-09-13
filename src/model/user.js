@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true,
-    match: /[a-zA-Z]+\.[a-zA-Z]+@fti+\.edu\.al/,
+    match:  /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/,
   },
   password: {
     type: String,
@@ -29,15 +29,11 @@ const userSchema = new mongoose.Schema({
     data: String,
     default: "",
   },
-  event: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Event",
-    },
-  ],
+  event: [],
+  bookings:[],
   faculty: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "fakultets",
+    ref: "fakultets"
   },
 });
 

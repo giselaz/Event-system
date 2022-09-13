@@ -1,10 +1,7 @@
 const Event = require("../../model/event");
-
+const User = require('../../model/user')
+const moment= require('moment');
 const createEvent = (event, userId,image,fakultetiId) => {
-  if (event.Lloji_Eventit == "online") {
-    event.Lloji_Eventit = Event.schema.path("Lloji_Eventit").enumValues[0];
-  } else event.Lloji_Eventit = Event.schema.path("Lloji_Eventit").enumValues[1];
-
   const event1 = new Event({
     name: event.name,
     event_type: event.event_type,
@@ -13,17 +10,22 @@ const createEvent = (event, userId,image,fakultetiId) => {
     event_link: event.event_link,
     created_By:userId,
     image: image,
-    faculty:fakultetiId
+    faculty:fakultetiId,
+    start_date:moment(event.start_date).format('DD-MM-YYYY')
   });
   event1
     .save()
     .then(() => {
       console.log("Created Event");
+
     })
     .catch((err) => {
       console.log(err);
     });
-    Event.find().populate('created_By')
+//if user admin push the created event to the events array
+    // const userDb = User.findOne({_id:userId})
+    // userDb.event.push(event1);
+  return event1;
 };
 
 const getEvent = async (userId) => {
@@ -34,7 +36,7 @@ const getEvent = async (userId) => {
 };
 const getEventDetails = async (eventId) => {
   const event = Event.findById(eventId);
-  return event;
+return event;
 };
 
 const UpdateEvent = async (data,eventId) => {
