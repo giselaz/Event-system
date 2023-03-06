@@ -1,20 +1,14 @@
-const User = require("../model/user");
-
- async function checkAdmin(req, res, next) {
-  const user = User.findById(req.user.id).select("userType");
-
-  if (user.type !== "admin")
+async function checkAdmin(req, res, next) {
+  if (req.user.role !== "admin")
     return res.status(403).json("User should have admin role");
 
   next();
 }
 
-async function checkPedagog(req,res,next){
-    const user = User.findById(req.user.id).select("userType");
+async function checkPedagog(req, res, next) {
+  if (req.user.role !== "admin" || req.user.role !== "pedagog")
+    return res.status(403).json("User not authorized");
 
-    if (user.type !== "admin" || user.type !== "pedagog")
-      return res.status(403).json("User not authorized");
-  
-    next();
+  next();
 }
-module.exports={checkAdmin,checkPedagog}
+module.exports = { checkAdmin, checkPedagog };

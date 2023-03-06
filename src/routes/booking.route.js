@@ -1,11 +1,17 @@
-const express = require('express')
+const express = require("express");
 var route = express.Router();
-const BookingController = require('../controllers/booking.controller')
-const AuthMiddleware = require('../middleware/auth.middleware');
+const BookingController = require("../controllers/booking.controller");
+const AuthMiddleware = require("../middleware/auth.middleware");
 
-route.post('/',AuthMiddleware.verifyToken,BookingController.createBooking);
+route.post(
+  "/bookEvent",
+  AuthMiddleware.verifyToken,
+  BookingController.createBooking
+);
+route.post(
+  "/onlineEvent",
+  AuthMiddleware.verifyToken,
+  BookingController.bookOnlineEvent
+);
 
-
-
-
-module.exports=route;
+module.exports = route;

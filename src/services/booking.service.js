@@ -1,77 +1,93 @@
-const uuid = require('uuid')
+const { ConnectionPoolClosedEvent } = require("mongodb");
+const { v4: uuid } = require("uuid");
 const Booking = require("../model/booking");
 const Event = require("../model/event");
-const User = require("../model/user")
-const stripe = require("stripe")("sk_test_51LaIrHL4LctRSxODoNdV7NbAaxOtllHudT8wPKPWcwKioMoRfnrrski7TS8h1CMVm6QNmkPSDD5C2Yl66zBrEZqx00lcPHW2zX");
+const User = require("../model/user");
+const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY);
 
-const bookLiveEvent = async (user, eventId,quantity,token) => {
+const bookLiveEvent = async (user, eventId, quantity, token) => {
   const event = await Event.findById(eventId);
-  const userDb = await User.findOne({_id:user._id});
-const foundBooking = userDb.bookings.find((booking)=>{
-    if(booking.event==eventId)
-    return booking;
-})
-  if(foundBooking || !event){
-    throw new Error(' You cannot book event')
-  }
-  if(event.fee==0){
-    const amount =0;
+  const userDb = await User.findOne({ _id: user._id }).select(
+    "-password -bookings"
+  );
+  if (!event.active) {
+    throw new Error("event has ended");
+  } else if (event.fee == 0) {
+    const amount = 0;
+    console.log(event);
     const booking = new Booking({
-      event:eventId,
-      user:user._id,
-      total_amount:amount,
-      quantity
-  })
-  booking.save().then(() => {
-      console.log("Created Booking");
-    }).catch((err) => {
-      console.log(err);})
-  
-      // booking.populate([{ path: "event", strictPopulate: false }])
-        userDb.bookings.push(booking);
-        userDb.save();
-      return booking;
-  }else{
+      event: event,
+      user: userDb,
+      total_amount: amount,
+      quantity,
+    });
+    booking
+      .save()
+      .then(() => {
+        console.log("Created Booking");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    return booking;
+  } else {
+    try {
+      const customer = await stripe.customers.create({
+        email: token.email,
+        source: token.id,
+      });
 
-try{
-    const costumer = await stripe.customers.create({
-        email:user.email,
-        source:token.id
-    })
-console.log(costumer)
-    const payment= await stripe.chargers.create({
-        amount:quantity*event.fee*100,
-        costumer:costumer.id,
-        currency: "ALL",
-        receipt_email:user.email
-    },
-    {
-        idempotencyKey:uuid()
-    })
+      const payment = await stripe.charges.create(
+        {
+          amount: quantity * event.fee * 100,
+          customer: customer.id,
+          currency: "ALL",
+          receipt_email: token.email,
+        },
+        {
+          idempotencyKey: uuid(),
+        }
+      );
 
-    if(payment){
+      if (payment) {
         const booking = new Booking({
-            event:eventId,
-            user:user._id,
-            total_amount:payment.amount,
-            quantity,
-            transactionid: uuid(),
-        })
-        (await booking.save()).populate('events').execPopulate();
-        userDb.bookings.push(booking);
-        userDb.save();
-        return booking;
+          event: event,
+          user: user._id,
+          total_amount: event.fee * quantity,
+          quantity,
+          transactionid: uuid(),
+        });
+        booking.save().then(() => console.log("Paid booking created"));
+        return booking.populate("event");
+      }
+    } catch (error) {
+      console.log(error);
     }
-}catch(error){
-        return error;
-}
-}
-  
-
   }
-   
+};
 
+const bookOnlineEvent = async (userId, eventId) => {
+  const event = await Event.findById(eventId);
+  const userDb = await User.findOne({ _id: userId }).select(
+    "-password -bookings"
+  );
+  const bookingUser = await Booking.findOne({ user: userId });
+  console.log(userDb);
+  if (!event.active) {
+    throw new Error("Eventi ka mbaruar");
+  } else if (bookingUser) {
+    throw new Error("Pjesemarrja juaj eshte konfirmuar tashme");
+  } else {
+    const booking = new Booking({
+      event,
+      user: userDb,
+    });
+    booking
+      .save()
+      .then(() => console.log("Online booking created"))
+      .catch((err) => console.log(err));
+    return booking;
+  }
+};
 
-const bookOnlineEvent = (user, event) => {};
-
-module.exports ={bookLiveEvent}
+module.exports = { bookLiveEvent, bookOnlineEvent };

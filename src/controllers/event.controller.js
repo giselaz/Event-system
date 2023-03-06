@@ -1,21 +1,56 @@
-const EventService = require('../services/admin/event.service')
-const {validateCreatedEvent} = require('../validations/event.validations')
-const moment = require('moment')
-exports.addEvent = async (req,res)=>{
-  console.log(req.file.path)
-  await validateCreatedEvent(req.body)
-  const event = await EventService.createEvent(req.body,req.user._id,req.file.path,req.params.fakultetId)
-  res.status(200).json({message:event})
-}
+const EventService = require("../services/admin/event.service");
+const { validateCreatedEvent } = require("../validations/event.validations");
+const moment = require("moment");
+const path = require("path");
 
-exports.getEvent=async (req,res)=>{
-const event =await EventService.getEvent(req.user.id)
-console.log(event)
-res.send(event)
+exports.addEvent = async (req, res) => {
+  const { error, value } = validateCreatedEvent(req.body);
+  if (error) {
+    res.status(400).json({ error: error.details[0].message });
+  } else {
+    await EventService.createEvent(
+      value,
+      req.user._id,
+      req.file.filename,
+      req.params.departamentId
+    ).then((event) => {
+      res.send(event);
+    });
+  }
+};
 
-}
-
-exports.getEventDetails = async (req,res)=>{
-  const event =await EventService.getEventDetails(req.params.eventId)
+exports.getEvent = async (req, res) => {
+  const event = await EventService.getEvent(req.user.id);
+  console.log(event);
   res.send(event);
-}
+};
+
+exports.getEventDetails = (req, res) => {
+  const event = EventService.getEventDetails(req.params.eventId).then((event) =>
+    res.json(event)
+  );
+};
+
+exports.getActiveEvents = async (req, res) => {
+  const events = await EventService.activeEvents();
+  res.status(200).send(events);
+};
+exports.getPastEvents = async (req, res) => {
+  const events = await EventService.getPastEvents();
+  res.send(events);
+};
+
+exports.getEventImage = (req, res) => {
+  EventService.getEventImage(req.params.id).then((imagePath) =>
+    res.sendFile(path.join("src", "images", imagePath))
+  );
+  // res.sendFile(EventService.getEventImage(req.params.id));
+};
+
+exports.getAllEvents = (req, res) => {
+  const events = EventService.getAllEvents(req.params.departamentId).then(
+    (events) => {
+      res.json(events);
+    }
+  );
+};

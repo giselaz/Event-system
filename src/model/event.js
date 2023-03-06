@@ -1,3 +1,4 @@
+const { boolean } = require("joi");
 const mongoose = require("mongoose");
 const eventSchema = new mongoose.Schema({
   name: {
@@ -12,17 +13,20 @@ const eventSchema = new mongoose.Schema({
     default: Date.now(),
     required: true,
   },
-  start_date:{
-    type:String,
-    min: [new Date(), "can't be before now!!"],
+  start_date: {
+    type: Date,
+    // min: [new Date(), "can't be before now!!"],
   },
-  end_date:{
-    type:String,
-    
+  end_date: {
+    type: Date,
+  },
+  active: {
+    type: Boolean,
+    default: "true",
   },
   created_By: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "users",
+    ref: "User",
   },
   event_type: {
     type: String,
@@ -41,16 +45,22 @@ const eventSchema = new mongoose.Schema({
   },
   image: {
     type: String,
-    required:true
+    required: true,
   },
-  faculty: {
+  department: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "fakultets",
+    ref: "Departament",
   },
-  participants: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "bookings",
-  }],
+  location: {
+    type: "string",
+    requiredL: true,
+  },
+  participants: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
 });
 const Event = mongoose.model("Event", eventSchema);
 

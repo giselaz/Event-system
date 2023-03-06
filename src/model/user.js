@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-
+const localMongoose = require("passport-local-mongoose");
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -11,7 +11,8 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true,
-    match:  /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/,
+    match:
+      /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/,
   },
   password: {
     type: String,
@@ -22,21 +23,18 @@ const userSchema = new mongoose.Schema({
     enum: ["user", "admin", "pedagog"],
     default: "user",
   },
-  ifVerified: {
-    type: Boolean,
+  userRole: {
+    type: mongoose.Schema.ObjectId,
+    ref: "roles",
+    required: true,
+    default: "63ea0931adfa3d88e6553286",
   },
-  resetLink: {
-    data: String,
-    default: "",
-  },
-  event: [],
-  bookings:[],
-  faculty: {
+  bookings: [{ type: mongoose.Schema.ObjectId, ref: "Booking" }],
+
+  departament: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "fakultets"
+    ref: "Department",
   },
 });
-
 const User = mongoose.model("User", userSchema);
-
 module.exports = User;
