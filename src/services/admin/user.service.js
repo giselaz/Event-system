@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const User = require("../../model/user");
 const Booking = require("../../model/booking");
+const Event = require("../../model/event");
 
 const CreateUser = async (user) => {
   if (await User.findOne({ email: user.email })) {
@@ -29,8 +30,8 @@ const CreateUser = async (user) => {
 };
 const setUserRole = async (userId, data) => {
   const role = await User.updateOne(
-    { id: userId },
-    { $set: { name: data } },
+    { _id: userId },
+    { $set: { userType: data } },
     { new: true }
   );
   return role;
@@ -43,10 +44,18 @@ const getUserInfo = (userId) => {
   }
   return user;
 };
-const getAdminEvents = (userId) => {
-  const events = User.findById(userId).select("event").populate("event");
-  console.log(events);
-  return events;
+const getAdminEvents = async (userId) => {
+  try {
+    const events = await Event.find({
+      created_By: userId,
+    })
+      .populate("department")
+      .exec();
+    console.log(events);
+    return events;
+  } catch (err) {
+    console.log(err);
+  }
 };
 const getAllBookings = (userId) => {
   const bookings = Booking.find({ user: userId })

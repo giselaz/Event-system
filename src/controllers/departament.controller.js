@@ -8,6 +8,6 @@ const postDepartament = async (req, res) => {
 const getAllDepartaments = async (req, res) => {
   const departaments = await DepartamentService.getAllDepartament();
 
-  res.send(departaments);
+  res.json(departaments);
 };
 module.exports = { postDepartament, getAllDepartaments };

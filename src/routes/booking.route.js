@@ -13,5 +13,9 @@ route.post(
   AuthMiddleware.verifyToken,
   BookingController.bookOnlineEvent
 );
-
+route.delete(
+  "/:eventId",
+  AuthMiddleware.verifyToken,
+  BookingController.removeBooking
+);
 module.exports = route;

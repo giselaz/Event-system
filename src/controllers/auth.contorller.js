@@ -8,7 +8,11 @@ const userLogin = async (req, res) => {
     .header("Authorization", tokens.access_token)
     .header("RefreshToken", tokens.refresh_token)
     .status(200)
-    .json(tokens.access_token);
+    .json({
+      user: tokens.user,
+      access_token: tokens.access_token,
+      refreshToken: tokens.refresh_token,
+    });
 };
 
 // const authLogin = async (req, res) => {

@@ -4,19 +4,19 @@ const moment = require("moment");
 const path = require("path");
 
 exports.addEvent = async (req, res) => {
-  const { error, value } = validateCreatedEvent(req.body);
-  if (error) {
-    res.status(400).json({ error: error.details[0].message });
-  } else {
-    await EventService.createEvent(
-      value,
-      req.user._id,
-      req.file.filename,
-      req.params.departamentId
-    ).then((event) => {
-      res.send(event);
-    });
-  }
+  // const { error, value } = validateCreatedEvent(req.body);
+  // if (error) {
+  //   res.status(400).json({ error: error.details[0].message });
+  // } else {
+  console.log(req.file);
+  await EventService.createEvent(
+    req.body,
+    req.user._id,
+    req.file.filename
+  ).then((event) => {
+    res.send(event);
+  });
+  // }
 };
 
 exports.getEvent = async (req, res) => {
@@ -53,4 +53,8 @@ exports.getAllEvents = (req, res) => {
       res.json(events);
     }
   );
+};
+exports.getParticipants = async (req, res) => {
+  const participants = await EventService.getParticipants(req.params.eventId);
+  res.json(participants);
 };

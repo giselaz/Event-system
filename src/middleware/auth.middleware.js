@@ -9,33 +9,7 @@ const UserModel = require("../model/user");
 const verifyToken = async (req, res, next) => {
   try {
     let token = req.headers.authorization?.split(" ");
-    if (!token) {
-      return res.sendStatus(401);
-    }
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-      if (err) {
-        const refreshToken = req.cookies.refreshToken;
-        if (!refreshToken) return res.sendStatus(401);
-        jwt.verify(
-          refreshToken,
-          process.env.REFRESH_TOKEN_SECRET,
-          (err, user) => {
-            if (err) return res.sendStatus(403);
-
-            const accessToken = generateAccessToken(user);
-            const newRefreshToken = generateRefreshToken(user);
-
-            res.json({
-              accessToken: accessToken,
-              refreshToken: newRefreshToken,
-            });
-          }
-        );
-      } else {
-        req.user = user;
-        next();
-      }
-    });
+    console.log(token);
     const signature = process.env.SECRET_KEY;
     req.user = jwt.verify(token[1], signature);
     next();
@@ -43,10 +17,6 @@ const verifyToken = async (req, res, next) => {
     console.log(error);
     res.status(401).send("Invalid Token");
   }
-};
-
-const isLoggedIn = (req, res, next) => {
-  req.user ? next() : res.sendStatus(401);
 };
 
 // const passportAuth = async () => {
@@ -71,4 +41,4 @@ const isLoggedIn = (req, res, next) => {
 //     },
 //   };
 // };
-module.exports = { verifyToken, isLoggedIn };
+module.exports = { verifyToken };

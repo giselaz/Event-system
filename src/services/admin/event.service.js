@@ -1,11 +1,12 @@
 const Event = require("../../model/event");
 const User = require("../../model/user");
+const Participant = require("../../model/participant");
 const moment = require("moment");
 const { eventNames } = require("pdfkit");
 const { resolve } = require("path");
 const { readlink } = require("fs");
 
-const createEvent = async (event, userId, image, departamentId) => {
+const createEvent = async (event, userId, image) => {
   const userDb = await User.findOne({ _id: userId }).select("-password");
   console.log(event.start_date);
   const event1 = new Event({
@@ -16,7 +17,7 @@ const createEvent = async (event, userId, image, departamentId) => {
     event_link: event.event_link,
     created_By: userId,
     image: image,
-    department: departamentId,
+    department: event.department,
     start_date: event.start_date,
     end_date: event.end_date,
     location: event.location,
@@ -82,24 +83,34 @@ const getPastEvents = async () => {
 
 const activeEvents = async () => {
   // return new Promise(resolve,reject)
-  const events = Event.find({
+  const events = await Event.find({
     start_date: {
       $gt: new Date(),
     },
   });
-
-  // for (let event of events) {
-  //   console.log(event);
-  // }
-  // .populate("faculty")
-  // .exec();
+  return events;
 };
-const getParticipants = async (eventId) => {
-  const participants = await Event.findById(eventId)
-    .select("participants")
-    .populate("participants");
 
-  return participants;
+// const getParticipants = async (eventId) => {
+//   const participants = await Event.findById(eventId)
+//     .select("participants")
+//     .populate("participants");
+
+//   return participants;
+// };
+
+const getParticipants = async (eventId) => {
+  try {
+    const participants = await Participant.find({
+      event: eventId,
+    })
+      .populate("event")
+      .populate("user")
+      .exec();
+    return participants;
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 const getEventImage = (eventId) => {

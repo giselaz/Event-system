@@ -73,7 +73,7 @@ const bookOnlineEvent = async (req, res) => {
       req.user._id,
       req.body.id
     ).then((booking) => {
-      console.log(booking.user);
+      // console.log(booking.user);
       const transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
@@ -114,4 +114,17 @@ const bookOnlineEvent = async (req, res) => {
     }
   }
 };
-module.exports = { createBooking, bookOnlineEvent };
+
+const removeBooking = async (req, res) => {
+  try {
+    await BookingService.removeBooking(req.body.userId, req.params.eventId);
+    res.status(200).json({ message: "Pjesemarresi eshte fshire" });
+  } catch (err) {
+    res.status(400).json({ message: err });
+  }
+};
+
+// const cancelBooking = async (req,res)=>{
+
+// }
+module.exports = { createBooking, bookOnlineEvent, removeBooking };

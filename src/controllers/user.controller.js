@@ -3,13 +3,18 @@ const UserService = require("../services/admin/user.service");
 const ValidateUser = require("../validations/user.validation");
 
 const addUser = async (req, res) => {
-  if (!ValidateUser.validateRegister(req.body))
-    throw new Error("Please enter valid data");
-  const user = await UserService.CreateUser(req.body);
-  if (!user) {
-    res.status(409).send("Email already in use");
+  const { value, error } = ValidateUser.validateRegister(req.body);
+
+  try {
+    const user = await UserService.CreateUser(value);
+    res.json(user);
+  } catch (err) {
+    if (error) {
+      res.status(400).json({ message: error.details[0].message });
+    } else if (err.message === "User already exist") {
+      res.status(400).json({ message: "Perdoruesi me kete email ekziston" });
+    } else res.status(500).json({ message: "internal server error" });
   }
-  res.json({ user: user });
 };
 const setRole = async (req, res) => {
   if (!ValidateUser.validateRole(req.body))

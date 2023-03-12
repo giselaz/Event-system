@@ -4,9 +4,11 @@ const Booking = require("../model/booking");
 const Event = require("../model/event");
 const User = require("../model/user");
 const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY);
+const Paricipant = require("../model/participant");
 
 const bookLiveEvent = async (user, eventId, quantity, token) => {
   const event = await Event.findById(eventId);
+  console.log(event);
   const userDb = await User.findOne({ _id: user._id }).select(
     "-password -bookings"
   );
@@ -58,6 +60,11 @@ const bookLiveEvent = async (user, eventId, quantity, token) => {
           transactionid: uuid(),
         });
         booking.save().then(() => console.log("Paid booking created"));
+        const participant = new Paricipant({
+          event: event,
+          user: userDb,
+        });
+        participant.save().then(() => console.log("participant created"));
         return booking.populate("event");
       }
     } catch (error) {
@@ -71,7 +78,10 @@ const bookOnlineEvent = async (userId, eventId) => {
   const userDb = await User.findOne({ _id: userId }).select(
     "-password -bookings"
   );
-  const bookingUser = await Booking.findOne({ user: userId });
+  const bookingUser = await Paricipant.findOne({
+    user: userId,
+    event: eventId,
+  });
   console.log(userDb);
   if (!event.active) {
     throw new Error("Eventi ka mbaruar");
@@ -82,12 +92,46 @@ const bookOnlineEvent = async (userId, eventId) => {
       event,
       user: userDb,
     });
+
     booking
       .save()
       .then(() => console.log("Online booking created"))
       .catch((err) => console.log(err));
+    const participant = new Paricipant({
+      event,
+      user: userDb,
+    });
+    participant.save().then(() => console.log("participant created"));
     return booking;
   }
 };
 
-module.exports = { bookLiveEvent, bookOnlineEvent };
+const removeBooking = async (userId, eventId) => {
+  try {
+    await Paricipant.deleteOne({
+      user: userId,
+      event: eventId,
+    });
+    await Booking.deleteOne({
+      user: userId,
+      event: eventId,
+    });
+    console.log("booking deleted");
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const addParticipant = (eventId, userId) => {
+  try {
+    const participant = new Paricipant({
+      event: eventId,
+      user: userId,
+    });
+    participant.save().then(() => console.log("Participant Created"));
+    return participant;
+  } catch (err) {
+    console.log(err);
+  }
+};
+module.exports = { bookLiveEvent, bookOnlineEvent, removeBooking };

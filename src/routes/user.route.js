@@ -5,7 +5,7 @@ const RoleMiddleware = require("../middleware/role.middleware");
 const AuthMiddleware = require("../middleware/auth.middleware");
 
 route.post("/signup", UserController.addUser);
-route.patch("/:userId", AuthMiddleware.verifyToken, UserController.setRole);
+route.patch("/:userId", UserController.setRole);
 route.get("/profile", AuthMiddleware.verifyToken, UserController.getUserInfo);
 route.get(
   "/profile/getAllBookings",

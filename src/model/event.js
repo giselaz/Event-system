@@ -55,12 +55,12 @@ const eventSchema = new mongoose.Schema({
     type: "string",
     requiredL: true,
   },
-  participants: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-    },
-  ],
+  // participants: [
+  //   {
+  //     type: mongoose.Schema.Types.ObjectId,
+  //     ref: "User",
+  //   },
+  // ],
 });
 const Event = mongoose.model("Event", eventSchema);
 
