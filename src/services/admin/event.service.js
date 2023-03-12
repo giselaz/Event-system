@@ -16,6 +16,7 @@ const createEvent = async (event, userId, image) => {
     fee: event.fee,
     event_link: event.event_link,
     created_By: userId,
+    created_By: userId,
     image: image,
     department: event.department,
     start_date: event.start_date,
@@ -44,6 +45,12 @@ const getEvent = async (userId) => {
     created_By: userId,
   });
   return event;
+};
+const getEventOfFaculty = async (facultyId) => {
+  const events = await Event.find({
+    faculty: facultyId,
+  });
+  return events;
 };
 const getEventDetails = async (eventId) => {
   const event = await Event.findById(eventId).populate("department");
