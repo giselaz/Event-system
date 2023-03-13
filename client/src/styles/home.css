@@ -1,0 +1,32 @@
+.home-container
+{
+    background: url(../assets/img/brand/6101073.jpg);
+    height: auto;
+    background-repeat: no-repeat;
+    width: 100%;
+   
+}
+
+.home-container .landing-text
+{
+    width: 40%;
+    transform: translateX(-215px);
+}
+.department-card:hover
+{
+background-color: #5e72e4;
+color:white;
+}
+
+.Card-container
+{
+margin-bottom: 40px;
+}
+
+.event-image
+{
+    max-width: 50%;
+    max-height: 50%;
+    object-fit: contain;
+
+}
