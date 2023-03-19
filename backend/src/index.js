@@ -4,7 +4,7 @@ const dotenv = require("dotenv");
 const path = require("path");
 const bodyParser = require("body-parser");
 const app = express();
-
+const job = require("./utils/cronjb");
 dotenv.config();
 const mongoose = require("mongoose");
 const UserRoute = require("./routes/user.route");
@@ -34,6 +34,8 @@ app.get("/events/:id/images", async (req, res) => {
     res.sendFile(path.join(__dirname, "images", imagePath));
   });
 });
+
+job.start();
 app.listen(4000 || port, () => {
   console.log(`Server Started at ${port}`);
 });

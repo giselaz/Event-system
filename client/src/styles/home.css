@@ -1,21 +1,23 @@
 .home-container
 {
     background: url(../assets/img/brand/6101073.jpg);
-    height: auto;
+    height: 70vh;
     background-repeat: no-repeat;
     width: 100%;
-   
+    background-size: cover;
 }
 
-.home-container .landing-text
-{
-    width: 40%;
-    transform: translateX(-215px);
-}
+
 .department-card:hover
 {
-background-color: #5e72e4;
-color:white;
+background-color: white;
+color:#5e72e4;
+}
+.department-card
+{
+    background:  linear-gradient(rgb(255, 254, 254), rgba(255, 255, 255, 0.5)), url("../assets/img/brand/gear.png");
+    background-size: cover;
+    
 }
 
 .Card-container
@@ -23,10 +25,31 @@ color:white;
 margin-bottom: 40px;
 }
 
-.event-image
+.register-link
 {
-    max-width: 50%;
-    max-height: 50%;
-    object-fit: contain;
+    text-decoration: none;
+    color:white;
+}
+/* .landing-parent .landing-text
+{
+    max-width: 30%;
+} */
 
+@media only screen and (max-width: 600px) {
+
+    .landing-parent{
+        flex-direction: column;
+    }
+
+    .landing-parent .landing-text
+    {
+        width:100%;
+    }
+}
+
+@media only screen and (min-width: 1200px) {
+    .landing-parent .landing-text
+    {
+        width:30%;
+    }
 }

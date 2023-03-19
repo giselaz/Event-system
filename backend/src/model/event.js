@@ -1,4 +1,3 @@
-const { boolean } = require("joi");
 const mongoose = require("mongoose");
 const eventSchema = new mongoose.Schema({
   name: {

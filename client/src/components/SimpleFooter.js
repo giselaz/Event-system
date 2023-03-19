@@ -13,7 +13,7 @@ import {
 const SimpleFooter = () => {
   return (
     <>
-      <footer className=" footer" style={{ height: "4rem" }}>
+      <footer className=" footer mt-5" style={{ height: "4rem" }}>
         <Container>
           <Row className=" row-grid align-items-center mb-5">
             <Col lg="6">

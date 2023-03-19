@@ -1,6 +1,5 @@
 const express = require("express");
 // const LocalStrategy = require("passport-local").Strategy;
-require("../utils/googleauth");
 var route = express.Router();
 const AuthController = require("../controllers/auth.contorller");
 const AuthMiddleware = require("../middleware/auth.middleware");

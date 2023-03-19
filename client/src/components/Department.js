@@ -5,7 +5,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { Link } from "react-router-dom";
 import "../styles/home.css";
-
+import image from "../assets/img/brand/gear.png";
 const Departament = () => {
   const [datas, setDatas] = useState([]);
 
@@ -21,24 +21,21 @@ const Departament = () => {
   }, []);
 
   return (
-    <Container className="Card-container">
-      <Row>
-        {datas.map((data) => (
-          <Col key={data._id}>
-            <Card
-              text="dark"
-              style={{ width: "30rem", height: "6rem" }}
-              className="mt-5 department-card d-flex align-items-center"
-              border="primary"
-            >
-              <Card.Title>
-                <Link to={`/departament/${data._id}/events`}>{data.emri}</Link>
-              </Card.Title>
-            </Card>
-          </Col>
-        ))}
-      </Row>
-    </Container>
+    <Row className="d-flex justify-content-center gap-4">
+      {datas.map((data) => (
+        <Col key={data._id}>
+          <Card
+            text="dark"
+            style={{ width: "15rem", height: "15rem" }}
+            className="mt-5 department-card d-flex align-items-center"
+          >
+            <Card.Title>
+              <Link to={`/departament/${data._id}/events`}>{data.emri}</Link>
+            </Card.Title>
+          </Card>
+        </Col>
+      ))}
+    </Row>
   );
 };
 

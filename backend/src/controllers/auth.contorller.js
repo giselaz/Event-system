@@ -15,11 +15,6 @@ const userLogin = async (req, res) => {
     });
 };
 
-// const authLogin = async (req, res) => {
-//   await ValidateUser.validateLogin(req.body);
-
-// };
-
 const userLogOut = async (req, res) => {
   const refreshToken = req.header("refreshToken");
   if (refreshToken.startsWith("Bearer ")) {

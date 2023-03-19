@@ -1,10 +1,9 @@
 const Event = require("../../model/event");
 const User = require("../../model/user");
 const Participant = require("../../model/participant");
-const moment = require("moment");
 const { eventNames } = require("pdfkit");
 const { resolve } = require("path");
-const { readlink } = require("fs");
+const cron = require("node-cron");
 
 const createEvent = async (event, userId, image) => {
   const userDb = await User.findOne({ _id: userId }).select("-password");
@@ -75,7 +74,7 @@ const getPastEvents = async () => {
         $lte: new Date(),
       },
     })
-      .populate("created_By", "-password -userType -bookings")
+      .populate("created_By", "-password  -bookings")
       .then((events) => {
         events.forEach((event) => {
           event.active = "false";
@@ -89,12 +88,11 @@ const getPastEvents = async () => {
 };
 
 const activeEvents = async () => {
-  // return new Promise(resolve,reject)
   const events = await Event.find({
     start_date: {
       $gt: new Date(),
     },
-  });
+  }).populate("created_By", "-password ");
   return events;
 };
 
@@ -128,6 +126,7 @@ const getEventImage = (eventId) => {
       .catch((err) => reject(err));
   });
 };
+
 module.exports = {
   createEvent,
   getEvent,

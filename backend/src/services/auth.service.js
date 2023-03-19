@@ -14,8 +14,6 @@ const { db } = require("../model/user");
 const logIn = async (user) => {
   const secretKey = process.env.SECRET_KEY;
   const payload = await validateUser(user);
-  const refresh_Token = jwt.sign(payload, process.env.REFRESH_KEY);
-
   const refreshDB = await refreshToken.create({
     token: refresh_Token,
     user_id: payload._id,
@@ -28,7 +26,7 @@ const logIn = async (user) => {
     .catch((err) => {
       console.log(err);
     });
-
+  const refresh_Token = jwt.sign(payload, process.env.REFRESH_KEY);
   return {
     access_token: "Bearer " + jwt.sign(payload, secretKey, { expiresIn: "3h" }),
     refresh_token: refresh_Token,

@@ -1,6 +1,4 @@
 const jwt = require("jsonwebtoken");
-const passport = require("passport");
-const config = require("../passport");
 const passportJWT = require("passport-jwt");
 var ExtractJwt = passportJWT.ExtractJwt;
 var Strategy = passportJWT.Strategy;
