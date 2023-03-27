@@ -15,7 +15,6 @@ const EventScreen = () => {
   const token = JSON.parse(localStorage.getItem("currentUser"));
   const id = useParams().departamentId;
   const [events, setEvents] = useState([]);
-  const [images, setImages] = useState([]);
 
   useEffect(() => {
     fetch(`/departament/${id}//allEvents`, {

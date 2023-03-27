@@ -1,64 +1,79 @@
 import React from "react";
-import {
-  Button,
-  NavItem,
-  NavLink,
-  Nav,
-  Container,
-  Row,
-  Col,
-  UncontrolledTooltip,
-} from "reactstrap";
-
+import "../styles/home.css";
+import logo from "../assets/img/brand/uniLogo22.png";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Form from "react-bootstrap/Form";
+import FormLabel from "react-bootstrap/esm/FormLabel";
+import { Button } from "reactstrap";
 const SimpleFooter = () => {
   return (
-    <>
-      <footer className=" footer mt-5" style={{ height: "4rem" }}>
-        <Container>
-          <Row className=" row-grid align-items-center mb-5">
-            <Col lg="6">
-              <h6 className=" text-primary font-weight-light mb-2">
-                Sheshi Nënë Tereza 4, Tiranë
-              </h6>
-            </Col>
-            <Col lg="4">
-              <h6 className=" text-primary font-weight-light mb-2">
-                Telefon: +355.42.278159
-              </h6>
-            </Col>
-            <Col className="text-lg-center btn-wrapper" lg="6"></Col>
-          </Row>
-          <hr />
-          <Row className=" align-items-center justify-content-md-between">
-            <Col md="6">
-              <div className=" copyright">
-                © 2010-2021 Universiteti Politeknik i Tiranës (UPT)
-              </div>
-            </Col>
-            <Col md="6">
-              <Nav className=" nav-footer justify-content-end">
-                <NavItem>
-                  <NavLink
-                    href="https://www.creative-tim.com/presentation?ref=adsr-footer"
-                    target="_blank"
-                  >
-                    Rreth Nesh
-                  </NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink
-                    href="http://blog.creative-tim.com?ref=adsr-footer"
-                    target="_blank"
-                  >
-                    Blog
-                  </NavLink>
-                </NavItem>
-              </Nav>
-            </Col>
-          </Row>
-        </Container>
-      </footer>
-    </>
+    <footer class="footer">
+      <Container class="container">
+        <Row class="row">
+          <Col className="footer-col">
+            <h4>UniEvent</h4>
+            <ul>
+              <li>
+                <a href="#">about us</a>
+              </li>
+              <li>
+                <a href="#">our services</a>
+              </li>
+              <li>
+                <a href="#">privacy policy</a>
+              </li>
+            </ul>
+          </Col>
+          <Col className="footer-col">
+            <h4>get help</h4>
+            <ul>
+              <li>
+                <a href="#">FAQ</a>
+              </li>
+              <li>
+                <a href="#">Support</a>
+              </li>
+              <li>
+                <a href="#">Terms & Conditions</a>
+              </li>
+              <li>
+                <a href="#">Privacy Policy</a>
+              </li>
+            </ul>
+          </Col>
+
+          <Col className="footer-col">
+            <h4>follow us</h4>
+            <Form className="newsletter">
+              <FormLabel>Sign up to our newsletter</FormLabel>
+              <Form.Control
+                type="text"
+                className="newsletter-input"
+              ></Form.Control>
+              <Button type="submit" className="newsletter-button">
+                Signup
+              </Button>
+            </Form>
+            <div class="social-links">
+              <a href="#">
+                <i class="fab fa-facebook-f"></i>
+              </a>
+              <a href="#">
+                <i class="fab fa-twitter"></i>
+              </a>
+              <a href="#">
+                <i class="fab fa-instagram"></i>
+              </a>
+              <a href="#">
+                <i class="fab fa-linkedin-in"></i>
+              </a>
+            </div>
+          </Col>
+        </Row>
+      </Container>
+    </footer>
   );
 };
 

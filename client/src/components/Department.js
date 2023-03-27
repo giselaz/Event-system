@@ -5,7 +5,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { Link } from "react-router-dom";
 import "../styles/home.css";
-import image from "../assets/img/brand/gear.png";
+
 const Departament = () => {
   const [datas, setDatas] = useState([]);
 

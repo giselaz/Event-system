@@ -20,6 +20,10 @@ import AdminScreen from "./screens/AdminScreen";
 import { Admin, Resource } from "react-admin";
 import AdminEventScreen from "./screens/AdminEventScreen";
 import AdminParticipantScreen from "./screens/AdminParticipants";
+import "./assets/vendor/nucleo/css/nucleo.css";
+import "./assets/vendor/font-awesome/css/font-awesome.min.css";
+import "@fortawesome/fontawesome-free/css/all.min.css";
+
 function App() {
   const [backendData, SetBackendData] = useState("");
   return (

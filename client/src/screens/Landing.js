@@ -1,33 +1,51 @@
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/esm/Button";
-import image from "../assets/img/brand/6101073.jpg";
 import "../assets/img/brand/6101073.jpg";
 import "../styles/home.css";
 import "../assets/vendor/nucleo/css/nucleo.css";
-
-import Departament from "../components/Department";
+import Categories from "../components/Categories";
 import { Link } from "react-router-dom";
+import "animate.css/animate.min.css";
+import Stats from "../components/Stats";
+import Reviews from "../components/Reviews";
+import UpCommingEvents from "../components/UpComingEvents";
 
 const Landing = () => {
   return (
     <>
-      <Container className=" landing-parent d-flex align-items-center">
+      <Container
+        className="landing-parent d-flex align-items-center"
+        style={{ marginTop: "100px" }}
+      >
         <Container className="landing-text d-flex flex-column">
-          <h1 style={{ lineHeight: "1" }}>Behu pjese e platformes</h1>
-          <h5>Informohu ne kohe reale mbi eventet ne Universitet</h5>
-          <Button color="primary" size="lg" type="button">
+          <h1
+            className="animate__animated animate__fadeInDown"
+            style={{ lineHeight: "1" }}
+          >
+            Be part of the Events Platform
+          </h1>
+          <p>Get informed in real time for events at your Uni</p>
+          <Button
+            style={{ backgroundColor: "#03506F", border: "none" }}
+            size="lg"
+            type="button"
+          >
             <Link to="/register" className="register-link">
               {" "}
-              Regjistrohu
+              Register
             </Link>
           </Button>
         </Container>
         <Container className="home-container d-flex justify-content-center align-items-center"></Container>
       </Container>
-      <Container className="departament-container d-flex flex-column">
+      <Categories />
+      <Stats />
+      <Reviews />
+      <UpCommingEvents />
+      {/* <Container className="departament-container d-flex flex-column">
         <h2>Zgjidhni departamentin</h2>
         <Departament />
-      </Container>
+      </Container> */}
     </>
   );
 };

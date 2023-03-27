@@ -110,72 +110,74 @@ const Login = () => {
   return (
     <section className="section section-shaped ">
       <div className="shape  bg-light"></div>
-      <Container className="pt-lg-7">
-        <Row className="justify-content-center">
-          <Col lg="5">
-            <Card className="bg-secondary shadow border-0">
-              {error.length > 0 && <Error msg={error}></Error>}
-              {success.length > 0 && <Success msg={success}></Success>}
-              <Card.Title className="bg-white pt-4">
-                <div className="text-muted text-center  ">
-                  <h4>Login</h4>
-                </div>
-              </Card.Title>
-              <Card.Body className="px-lg-5 py-lg-5">
-                <div className="bs">
-                  <Form onSubmit={handleSubmit(onSubmit)}>
-                    <FormGroup>
-                      <InputGroup className="input-group-alternative mb-3">
-                        <InputGroup.Text>
-                          <i className="ni ni-hat-3" />
-                        </InputGroup.Text>
-                        <Form.Control
-                          type="text"
-                          className="form-control"
-                          placeholder="Email"
-                          {...register("email", {
-                            required: true,
-                            pattern:
-                              /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                          })}
-                        />
-                      </InputGroup>
-                    </FormGroup>
+      <Container
+        className="pt-lg-7 d-flex align-items-center justify-content-center"
+        style={{ height: "100vh" }}
+      >
+        <Card
+          className="bg-secondary shadow border-0"
+          style={{ height: "20em" }}
+        >
+          {error.length > 0 && <Error msg={error}></Error>}
+          {success.length > 0 && <Success msg={success}></Success>}
+          <Card.Title className="bg-white pt-4">
+            <div className="text-muted text-center  ">
+              <h4>Login</h4>
+            </div>
+          </Card.Title>
+          <Card.Body className="px-lg-5 py-lg-5">
+            <div className="bs">
+              <Form onSubmit={handleSubmit(onSubmit)}>
+                <FormGroup>
+                  <InputGroup className="input-group-alternative mb-3">
+                    <InputGroup.Text>
+                      <i className="ni ni-hat-3" />
+                    </InputGroup.Text>
+                    <Form.Control
+                      type="text"
+                      className="form-control"
+                      placeholder="Email"
+                      {...register("email", {
+                        required: true,
+                        pattern:
+                          /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                      })}
+                    />
+                  </InputGroup>
+                </FormGroup>
 
-                    {errors.email && (
-                      <p style={{ color: "red" }}>Vendos nje email te sakte</p>
-                    )}
-                    <FormGroup>
-                      <InputGroup className="input-group-alternative">
-                        <InputGroup.Text>
-                          <i className="ni ni-lock-circle-open" />
-                        </InputGroup.Text>
+                {errors.email && (
+                  <p style={{ color: "red" }}>Vendos nje email te sakte</p>
+                )}
+                <FormGroup>
+                  <InputGroup className="input-group-alternative">
+                    <InputGroup.Text>
+                      <i className="ni ni-lock-circle-open" />
+                    </InputGroup.Text>
 
-                        <Form.Control
-                          placeholder="Password"
-                          type="password"
-                          autoComplete="off"
-                          {...register("password", {
-                            required: true,
-                            // pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,15}$/,
-                          })}
-                        />
-                      </InputGroup>
-                    </FormGroup>
+                    <Form.Control
+                      placeholder="Password"
+                      type="password"
+                      autoComplete="off"
+                      {...register("password", {
+                        required: true,
+                        // pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,15}$/,
+                      })}
+                    />
+                  </InputGroup>
+                </FormGroup>
 
-                    {errors.password && (
-                      <p style={{ color: "red" }}>
-                        Password duhet te kete te pakten 6 karaktere
-                      </p>
-                    )}
+                {errors.password && (
+                  <p style={{ color: "red" }}>
+                    Password duhet te kete te pakten 6 karaktere
+                  </p>
+                )}
 
-                    <button className="btn btn-primary mt-3">Login</button>
-                  </Form>
-                </div>
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
+                <button className="btn btn-primary mt-3">Login</button>
+              </Form>
+            </div>
+          </Card.Body>
+        </Card>
       </Container>
     </section>
   );

@@ -6,7 +6,7 @@ import Col from "react-bootstrap/Col";
 import { Link } from "react-router-dom";
 import NavDropdown from "react-bootstrap/NavDropdown";
 
-const NavDepartament = () => {
+const NavDepartament = (props) => {
   const [datas, setDatas] = useState([]);
 
   useEffect(() => {
@@ -21,11 +21,16 @@ const NavDepartament = () => {
   }, []);
 
   return (
-    <NavDropdown title="Departamentet" id="collasible-nav-dropdown">
+    <NavDropdown
+      title="Departamentet"
+      className={props.className}
+      id="collasible-nav-dropdown"
+    >
       {datas.map((data) => (
         <NavDropdown.Item
           as={Link}
           to={`/departament/${data._id}/events`}
+          className={props.className}
           key={data._id}
         >
           {data.emri}

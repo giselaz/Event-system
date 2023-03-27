@@ -1,7 +1,7 @@
 import Nav from "react-bootstrap/Nav";
 import { Link, useNavigate } from "react-router-dom";
 
-const NavbarProfile = () => {
+const NavbarProfile = (props) => {
   const navigate = useNavigate();
 
   const handleRoute = () => {
@@ -19,8 +19,11 @@ const NavbarProfile = () => {
     navigate(route);
   };
   return (
-    <Nav.Link onClick={handleIconClick}>
-      <i className="ni ni-circle-08" style={{ fontSize: 25 }}></i>
+    <Nav.Link className={props.className} onClick={handleIconClick}>
+      <i
+        className="ni ni-circle-08"
+        style={{ fontSize: 30, color: "#03506F" }}
+      ></i>
     </Nav.Link>
   );
 };

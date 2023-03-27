@@ -3,24 +3,29 @@ import Image from "react-bootstrap/esm/Image";
 import axios from "axios";
 import CardImg from "react-bootstrap/esm/CardImg";
 import "../styles/home.css";
-const EventImage = (props) => {
-  const eventId = props.id;
-  console.log(eventId);
+
+const CategoryImage = (props) => {
+  const categoryId = props.id;
+
   const [image, setImage] = useState("");
 
   useEffect(() => {
     axios
-      .get(`/events/${eventId}/images`, { responseType: "blob" })
+      .get(`departament/${categoryId}/image`, { responseType: "blob" })
       .then((res) => {
         setImage(URL.createObjectURL(res.data));
-        console.log(image);
       })
       .catch((err) => console.log(err));
-  }, [eventId]);
+  }, [categoryId]);
 
   return (
-    <CardImg src={image} style={props.style} className={props.className} />
+    <div
+      className={props.className}
+      style={{ backgroundImage: `url(${image})` }}
+      onMouseEnter={props.onMouseEnter}
+      onMouseLeave={props.onMouseLeave}
+    />
   );
 };
 
-export default EventImage;
+export default CategoryImage;
