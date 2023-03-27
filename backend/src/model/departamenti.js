@@ -8,6 +8,9 @@ const DepartamentSchema = new mongoose.Schema({
   pershkrimi: {
     type: String,
   },
+  image: {
+    type: String,
+  },
 });
 
 const departamenti = mongoose.model("Departament", DepartamentSchema);

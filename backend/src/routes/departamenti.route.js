@@ -37,5 +37,6 @@ route.get(
   AuthMiddleware.verifyToken,
   EventController.getParticipants
 );
+route.get("/:departamentId/image", DepartamentController.getDepartamentImage);
 // route.get("/events/:id/images", EventController.getEventImage);
 module.exports = route;
