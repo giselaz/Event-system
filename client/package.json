@@ -39,7 +39,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "npm run compile-sass && react-scripts build",
+    "build": "npm run  && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "minify-sass": "sass src/assets/scss/argon-design-system-react.scss src/assets/css/argon-design-system-react.min.css --style compressed"
