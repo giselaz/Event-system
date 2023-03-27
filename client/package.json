@@ -42,7 +42,6 @@
     "build": "npm run compile-sass && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "compile-sass": "sass src/assets/scss/argon-design-system-react.scss src/assets/css/argon-design-system-react.css",
     "minify-sass": "sass src/assets/scss/argon-design-system-react.scss src/assets/css/argon-design-system-react.min.css --style compressed"
   },
   "proxy": "http://localhost:4000",
