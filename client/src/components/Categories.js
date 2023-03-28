@@ -4,13 +4,14 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import CategoryImage from "./CategoryImage";
 import Card from "react-bootstrap/Card";
-
+import axios from "axios";
 const Categories = () => {
   const [datas, setDatas] = useState([]);
   const [isHovering, setIsHovering] = useState(false);
 
   useEffect(() => {
-    fetch("/departament")
+    axios
+      .get("/departament")
       .then((response) => response.json())
       .then((data) => {
         setDatas(data);
