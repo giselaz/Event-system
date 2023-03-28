@@ -9,12 +9,14 @@ const Categories = () => {
   const [datas, setDatas] = useState([]);
   const [isHovering, setIsHovering] = useState(false);
 
+  const axiosInstance = axios.create({
+    baseURL: "https://event-system-yb18.onrender.com",
+  });
   useEffect(() => {
-    axios
+    axiosInstance
       .get("/departament")
-      .then((response) => response.json())
-      .then((data) => {
-        setDatas(data);
+      .then((response) => {
+        setDatas(response.data);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
