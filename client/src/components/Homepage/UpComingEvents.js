@@ -7,17 +7,17 @@ import Card from "react-bootstrap/Card";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import EventImage from "./EventImage";
-import { Button } from "reactstrap";
-
+import axiosInstance from "../../services/helper";
+import { Link } from "react-router-dom";
 const UpCommingEvents = () => {
   const [events, setEvents] = useState([]);
 
   useEffect(() => {
     console.log("helloo");
-    fetch("/departament/activeEvents")
-      .then((response) => response.json())
+    axiosInstance
+      .get("/departament/activeEvents")
       .then((response) => {
-        setEvents(response);
+        setEvents(response.data);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -55,7 +55,11 @@ const UpCommingEvents = () => {
         <Slider {...settings}>
           {events.map((event) => (
             <Col>
-              <Card className="event-container">
+              <Card
+                as={Link}
+                to={`/events/${event._id}`}
+                className="event-container"
+              >
                 <EventImage id={event._id} className="event-image" />
                 <Card.Body class="body-container">
                   <div className="overlay"></div>

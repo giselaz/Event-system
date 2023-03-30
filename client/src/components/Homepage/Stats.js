@@ -24,7 +24,9 @@ const Stats = () => {
     }
 
     return () => {
-      observer.unobserve(containerRef.current);
+      if (containerRef.current) {
+        observer.unobserve(containerRef.current);
+      }
     };
   }, []);
   return (

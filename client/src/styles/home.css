@@ -100,8 +100,13 @@ margin-bottom: 40px;
     font-size: 24px;
     font-weight: bold;
     font-family: "Poppins",sans-serif;
+    text-decoration: none;
   }
 
+ .card__content .card__title:hover
+ {
+  color:white;
+ }
   .card__content .card__text
   {
     font-size: 20px;
@@ -180,6 +185,10 @@ margin-bottom: 40px;
     padding-bottom: 50px;
   }
 
+  .reviews-slider
+  {
+     transform: translateX(5%);
+  }
   .inner-reviews .review-title
 {
     color:#3d4248;
@@ -212,6 +221,14 @@ margin-bottom: 40px;
   background-color: #fff;
   box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.15);
   cursor: pointer;
+  text-decoration: none;
+  color:#3d4248;
+}
+
+.event-container 
+{
+  text-decoration: none;
+ color:#18537a;
 }
 .event-image,
 .body-container {
@@ -228,6 +245,7 @@ margin-bottom: 40px;
 
 .body-container {
   position: relative;
+   color:#3d4248;
 }
 
 .overlay {

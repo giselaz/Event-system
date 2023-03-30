@@ -4,14 +4,12 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import CategoryImage from "./CategoryImage";
 import Card from "react-bootstrap/Card";
-import axios from "axios";
+import axiosInstance from "../../services/helper";
+import { Link } from "react-router-dom";
+
 const Categories = () => {
   const [datas, setDatas] = useState([]);
-  const [isHovering, setIsHovering] = useState(false);
 
-  const axiosInstance = axios.create({
-    baseURL: "https://event-system-yb18.onrender.com",
-  });
   useEffect(() => {
     axiosInstance
       .get("/departament")
@@ -22,15 +20,6 @@ const Categories = () => {
         console.error("Error fetching data:", error);
       });
   }, []);
-  const handleMouseEnter = () => {
-    setIsHovering(true);
-    console.log("mouse enter");
-  };
-
-  const handleMouseLeave = () => {
-    setIsHovering(false);
-    console.log("mouse leaving");
-  };
 
   return (
     <Container className="mt-4 d-flex align-items-center flex-column">
@@ -52,14 +41,11 @@ const Categories = () => {
         {datas.map((data) => (
           <Col xl={4} lg={4} md={6} className="mb-3" key={data._id}>
             <Card style={{ minHeight: "12rem" }}>
-              <CategoryImage
-                id={data._id}
-                className="card__image"
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-              />
+              <CategoryImage id={data._id} className="card__image" />
               <Card.Body className="card__content">
                 <Card.Title
+                  as={Link}
+                  to={`/departament/${data._id}/events`}
                   className="card__title
                 "
                 >
@@ -76,16 +62,3 @@ const Categories = () => {
 };
 
 export default Categories;
-
-{
-  /* <div className="card">
-              <CategoryImage className="card__image" id={data._id} />
-              <div className="card__content d-flex align-items-center justify-content-center">
-                <h2 className="card__title">{data.emri}</h2>
-
-                <div id="description" className="card__text hidden-text">
-                  <p>{data.pershkrimi}</p>
-                </div>
-              </div>
-            </div> */
-}

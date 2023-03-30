@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Tabs } from "antd";
-import { Tag } from "antd";
-import Nav from "react-bootstrap/Nav";
 import Container from "react-bootstrap/esm/Container";
-import { Link } from "react-router-dom";
-import MyBookingScreen from "./MyBookingScreen";
+import MyBookingScreen from "./Event/MyBookingScreen";
 import Button from "react-bootstrap/Button";
 import { Navigate } from "react-router-dom";
 import axios from "axios";

@@ -7,10 +7,10 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import CardImg from "react-bootstrap/esm/CardImg";
-import man from "../assets/img/brand/man.png";
-import man1 from "../assets/img/brand/man1.png";
-import woman from "../assets/img/brand/woman.png";
-import woman1 from "../assets/img/brand/woman1.png";
+import man from "../../assets/img/brand/man.png";
+import man1 from "../../assets/img/brand/man1.png";
+import woman from "../../assets/img/brand/woman.png";
+import woman1 from "../../assets/img/brand/woman1.png";
 const data = [
   {
     name: "Liam",
@@ -79,7 +79,7 @@ const Reviews = () => {
           />
         </div>
         <Row className="mt-3">
-          <Slider {...settings}>
+          <Slider {...settings} className="reviews-slider">
             {data.map((review) => (
               <Col lg={4}>
                 <Card

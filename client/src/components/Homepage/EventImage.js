@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
-import Image from "react-bootstrap/esm/Image";
-import axios from "axios";
 import CardImg from "react-bootstrap/esm/CardImg";
-import "../styles/home.css";
+import "../../styles/home.css";
+import axiosInstance from "../../services/helper";
+
 const EventImage = (props) => {
   const eventId = props.id;
   console.log(eventId);
   const [image, setImage] = useState("");
 
   useEffect(() => {
-    axios
+    axiosInstance
       .get(`/events/${eventId}/images`, { responseType: "blob" })
       .then((res) => {
         setImage(URL.createObjectURL(res.data));

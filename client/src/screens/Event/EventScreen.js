@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { set } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Card from "react-bootstrap/esm/Card";
 import Row from "react-bootstrap/esm/Row";
 import Col from "react-bootstrap/esm/Col";
-import EventImage from "../components/EventImage";
+import EventImage from "../../components/Homepage/EventImage";
 import Button from "react-bootstrap/esm/Button";
 import { Link } from "react-router-dom";
-import { Input } from "reactstrap";
-import Form from "react-bootstrap/Form";
+import axiosInstance from "../../services/helper";
 
 const EventScreen = () => {
   const token = JSON.parse(localStorage.getItem("currentUser"));
@@ -17,14 +15,15 @@ const EventScreen = () => {
   const [events, setEvents] = useState([]);
 
   useEffect(() => {
-    fetch(`/departament/${id}//allEvents`, {
-      headers: {
-        Authorization: `${token}`,
-      },
-    })
-      .then((response) => response.json())
+    axiosInstance
+      .get(`/departament/${id}//allEvents`, {
+        headers: {
+          Authorization: `${token}`,
+        },
+      })
+
       .then((response) => {
-        setEvents(response);
+        setEvents(response.data);
       })
       .catch((err) => console.log(err));
   }, []);

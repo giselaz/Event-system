@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
-import Image from "react-bootstrap/esm/Image";
 import axios from "axios";
-import CardImg from "react-bootstrap/esm/CardImg";
-import "../styles/home.css";
+import "../../styles/home.css";
+import axiosInstance from "../../services/helper";
 
 const CategoryImage = (props) => {
   const categoryId = props.id;
@@ -10,7 +9,7 @@ const CategoryImage = (props) => {
   const [image, setImage] = useState("");
 
   useEffect(() => {
-    axios
+    axiosInstance
       .get(`departament/${categoryId}/image`, { responseType: "blob" })
       .then((res) => {
         setImage(URL.createObjectURL(res.data));

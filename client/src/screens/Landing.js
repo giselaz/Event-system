@@ -3,12 +3,12 @@ import Button from "react-bootstrap/esm/Button";
 import "../assets/img/brand/6101073.jpg";
 import "../styles/home.css";
 import "../assets/vendor/nucleo/css/nucleo.css";
-import Categories from "../components/Categories";
+import Categories from "../components/Homepage/Categories";
 import { Link } from "react-router-dom";
 import "animate.css/animate.min.css";
-import Stats from "../components/Stats";
-import Reviews from "../components/Reviews";
-import UpCommingEvents from "../components/UpComingEvents";
+import Stats from "../components/Homepage/Stats";
+import Reviews from "../components/Homepage/Reviews";
+import UpCommingEvents from "../components/Homepage/UpComingEvents";
 
 const Landing = () => {
   return (

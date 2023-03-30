@@ -3,12 +3,11 @@ import Container from "react-bootstrap/esm/Container";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import Row from "react-bootstrap/Row";
-import axios from "axios";
 import Image from "react-bootstrap/Image";
-import { Tag } from "antd";
 
-import Loader from "../components/Loader";
-import Error from "../components/Error";
+import Loader from "../../components/Loader";
+import Error from "../../components/Error";
+import axiosInstance from "../../services/helper";
 
 function MyBookingScreen() {
   const [bookings, setBookings] = useState([]);
@@ -17,25 +16,13 @@ function MyBookingScreen() {
 
   const token = JSON.parse(localStorage.getItem("currentUser"));
 
-  //   async function fetchMyAPI() {
-  //     setError("");
-  //     setLoading(true);
-  //     try {
-  //       const data = (await axios.post("/profile/getAllBookings")).data;
-  //       setBookings(data);
-  //     } catch (error) {
-  //       console.log(error);
-  //       setError(error);
-  //     }
-  //     setLoading(false);
-  //   }
-
   useEffect(() => {
-    fetch("/users/profile/getAllBookings", {
-      headers: {
-        Authorization: `${token}`,
-      },
-    })
+    axiosInstance
+      .get("/users/profile/getAllBookings", {
+        headers: {
+          Authorization: `${token}`,
+        },
+      })
       .then((response) => response.json())
       .then(
         (data) => setBookings(data),

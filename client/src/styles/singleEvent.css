@@ -1,0 +1,64 @@
+
+.single-event-card
+{
+    box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.15);
+}
+
+.single-event-details
+{
+    padding: 21px;
+    display: flex;
+    flex-direction: column;
+    font-size: 20px;
+    
+}
+
+.single-event-details .card-title
+{
+    flex:0.5;
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+.single-event-image
+{
+    overflow: hidden;
+    height:65vh;
+}
+
+.number-of-tickets input
+{
+transform: translateX(50%);
+margin:10px 0;
+}
+.number-of-tickets input:active,.number-of-tickets input:focus
+{
+    border: 1px solid #03506f;
+    outline: none;
+}
+.single-event-details .single-pay
+{
+    background-color:#03506f ;
+    padding: 15px 50px;
+    border: none;
+    font-size: 1.1em;
+    margin-top:20px;
+}
+
+.single-event-details .single-pay:hover
+{
+    opacity: 0.6;
+    transform: translateY(-10%);
+}
+.single-event-details .event-fee
+{
+    font-size: 1.5em;
+    color:#03506f;
+
+}
+
+.single-event-date i
+{
+ color:#03506f;
+ padding-right: 13px;
+ font-size: 1.2em;
+}
