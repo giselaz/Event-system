@@ -103,13 +103,18 @@ const SingleEventScreen = () => {
   return (
     <div
       className="d-flex pt-lg-7 justify-content-center align-items-center"
-      style={{ minHeight: "100vh", width: "100%" }}
+      style={{
+        minHeight: "100vh",
+        width: "100%",
+        marginTop: "14%",
+        marginBottom: "14%",
+      }}
     >
       <Card className="single-event-card">
         <Container className="m-0 p-0">
           {error.length > 0 ? <Error msg={error}></Error> : " "}
           <Row className="g-0 justify-content-evenly">
-            <Col sm={6} lg={6} md={5} className="single-event-image p=-">
+            <Col sm={12} lg={6} md={12} className="single-event-image">
               <EventImage className="img-fluid" id={id}></EventImage>
             </Col>
             <Col sm={6} lg={6} md={7} className="single-event-details">

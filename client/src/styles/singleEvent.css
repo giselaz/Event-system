@@ -3,13 +3,16 @@
 {
     box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.15);
 }
-
+.single-event-card .card-img
+{
+    border-top-right-radius: 0;
+}
 .single-event-details
 {
     padding: 21px;
     display: flex;
     flex-direction: column;
-    font-size: 20px;
+    font-size: 18px;
     
 }
 
@@ -62,3 +65,29 @@ margin:10px 0;
  padding-right: 13px;
  font-size: 1.2em;
 }
+
+@media (min-width:320px ) and (max-width:576px) { 
+
+    .single-event-card
+    {
+        margin-top:20%;
+    }
+}
+
+/*  Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {  }
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) and (max-width:1200px) {  
+    .single-event-image
+    {
+        overflow: visible;
+       height:90%;
+    }
+}
+
+/* // X-Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {  }
+
+/* // XX-Large devices (larger desktops, 1400px and up) */
+@media (min-width: 1400px) {  }
