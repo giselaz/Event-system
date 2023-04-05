@@ -1,42 +1,27 @@
 import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
-import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
 import Card from "react-bootstrap/Card";
-import { isEmail } from "validator";
 import { useForm } from "react-hook-form";
 import FormGroup from "react-bootstrap/FormGroup";
 import InputGroup from "react-bootstrap/InputGroup";
-import { useNavigate } from "react-router-dom";
-import { useRef, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Error from "../Error";
 import Success from "../Success";
-import { Navigate } from "react-router-dom";
-
-const required = (value) => {
-  if (!value) {
-    return (
-      <div className="alert alert-danger" role="alert">
-        This field is required!
-      </div>
-    );
-  }
-};
+import Register2 from "../../screens/Register2";
+import "../../styles/login.css";
+import { useState } from "react";
+import "animate.css";
 
 const Login = () => {
   let navigate = useNavigate();
 
-  const checkBtn = useRef();
-
-  // const [email, setEmail] = useState("");
-  // const [password, setPassword] = useState("");
   const [data, setData] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [showRegister, setShowRegister] = useState(false);
   const {
     register,
     handleSubmit,
@@ -106,79 +91,114 @@ const Login = () => {
   //     setLoading(false);
   //   }
   // };
+  const handleRegister = () => {
+    const loginCard = document.querySelector(".login-card");
+    loginCard.classList.add("animate__fadeOutUp");
+    setTimeout(() => {
+      setShowRegister(true);
+    }, 500);
+  };
+
+  const handleLogin = () => {
+    setTimeout(() => {
+      setShowRegister(false);
+    }, 500);
+  };
 
   return (
-    <section className="section section-shaped ">
+    <section
+      className="section section-shaped login-container "
+      style={{ padding: "15% 0" }}
+    >
       <div className="shape  bg-light"></div>
-      <Container
-        className="pt-lg-7 d-flex align-items-center justify-content-center"
-        style={{ height: "100vh" }}
-      >
-        <Card
-          className="bg-secondary shadow border-0"
-          style={{ height: "20em" }}
+
+      {showRegister ? (
+        <Container
+          className="pt-lg-7 d-flex flex-column align-items-center"
+          style={{ height: "100vh" }}
         >
-          {error.length > 0 && <Error msg={error}></Error>}
-          {success.length > 0 && <Success msg={success}></Success>}
-          <Card.Title className="bg-white pt-4">
-            <div className="text-muted text-center  ">
-              <h4>Login</h4>
-            </div>
-          </Card.Title>
-          <Card.Body className="px-lg-5 py-lg-5">
-            <div className="bs">
-              <Form onSubmit={handleSubmit(onSubmit)}>
-                <FormGroup>
-                  <InputGroup className="input-group-alternative mb-3">
-                    <InputGroup.Text>
-                      <i className="ni ni-hat-3" />
-                    </InputGroup.Text>
-                    <Form.Control
-                      type="text"
-                      className="form-control"
-                      placeholder="Email"
-                      {...register("email", {
-                        required: true,
-                        pattern:
-                          /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                      })}
-                    />
-                  </InputGroup>
-                </FormGroup>
+          <Register2 className="animate__animated animate__fadeInDown register__login" />
+          <Link onClick={handleLogin}>Already have an account?</Link>
+        </Container>
+      ) : (
+        <Container
+          className="pt-lg-7 d-flex flex-column align-items-center"
+          style={{ height: "100vh" }}
+        >
+          <Card
+            className="shadow border-0 login-card register__login animate__animated"
+            style={{ paddingTop: "15px" }}
+          >
+            {error.length > 0 && <Error msg={error}></Error>}
+            {success.length > 0 && <Success msg={success}></Success>}
+            <Card.Title className=" pt-4" style={{ color: "white" }}>
+              Login
+            </Card.Title>
+            <Card.Body className="px-lg-5 py-lg-5">
+              <div className="bs">
+                <Form onSubmit={handleSubmit(onSubmit)}>
+                  <FormGroup>
+                    <InputGroup className="input-group-alternative mb-5">
+                      <InputGroup.Text>
+                        <i className="ni ni-hat-3" />
+                      </InputGroup.Text>
+                      <Form.Control
+                        type="text"
+                        className="form-control"
+                        placeholder="Email"
+                        {...register("email", {
+                          required: true,
+                          pattern:
+                            /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                        })}
+                      />
+                    </InputGroup>
+                  </FormGroup>
 
-                {errors.email && (
-                  <p style={{ color: "red" }}>Vendos nje email te sakte</p>
-                )}
-                <FormGroup>
-                  <InputGroup className="input-group-alternative">
-                    <InputGroup.Text>
-                      <i className="ni ni-lock-circle-open" />
-                    </InputGroup.Text>
+                  {errors.email && (
+                    <p style={{ color: "#ed5249" }}>Write a valid email</p>
+                  )}
+                  <FormGroup>
+                    <InputGroup className="input-group-alternative">
+                      <InputGroup.Text>
+                        <i className="ni ni-lock-circle-open" />
+                      </InputGroup.Text>
 
-                    <Form.Control
-                      placeholder="Password"
-                      type="password"
-                      autoComplete="off"
-                      {...register("password", {
-                        required: true,
-                        // pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,15}$/,
-                      })}
-                    />
-                  </InputGroup>
-                </FormGroup>
+                      <Form.Control
+                        placeholder="Password"
+                        type="password"
+                        autoComplete="off"
+                        {...register("password", {
+                          required: true,
+                          // pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,15}$/,
+                        })}
+                      />
+                    </InputGroup>
+                  </FormGroup>
 
-                {errors.password && (
-                  <p style={{ color: "red" }}>
-                    Password duhet te kete te pakten 6 karaktere
-                  </p>
-                )}
+                  {errors.password && (
+                    <p style={{ color: "#ed5249" }}>
+                      Password should have at least 6 characters
+                    </p>
+                  )}
 
-                <button className="btn btn-primary mt-3">Login</button>
-              </Form>
-            </div>
-          </Card.Body>
-        </Card>
-      </Container>
+                  <button
+                    className="btn btn-primary mt-5"
+                    style={{
+                      padding: "3% 18%",
+                      backgroundColor: "#03506f",
+                      border: "none",
+                    }}
+                  >
+                    Login
+                  </button>
+                </Form>
+              </div>
+            </Card.Body>
+          </Card>
+          <Link onClick={handleRegister}>Create an account</Link>
+        </Container>
+      )}
     </section>
   );
 };

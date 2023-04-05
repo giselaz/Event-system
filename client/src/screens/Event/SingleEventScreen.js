@@ -101,90 +101,93 @@ const SingleEventScreen = () => {
   };
 
   return (
-    <div
-      className="d-flex pt-lg-7 justify-content-center align-items-center"
-      style={{
-        minHeight: "100vh",
-        width: "100%",
-        marginTop: "14%",
-        marginBottom: "14%",
-      }}
-    >
-      <Card className="single-event-card">
-        <Container className="m-0 p-0">
-          {error.length > 0 ? <Error msg={error}></Error> : " "}
-          <Row className="g-0 justify-content-evenly">
-            <Col sm={12} lg={6} md={12} className="single-event-image">
-              <EventImage className="img-fluid" id={id}></EventImage>
-            </Col>
-            <Col sm={6} lg={6} md={7} className="single-event-details">
-              <Card.Title>{event.name}</Card.Title>
-              <Card.Text className="event-description">
-                {event.description}
-              </Card.Text>
-              <Card.Text className="single-event-date">
-                <i className="far fa-calendar-alt"></i>
-                {new Date(event.start_date).toLocaleDateString("sq-AL", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })}{" "}
-                ,{" "}
-                {new Date(event.start_date).toLocaleTimeString("en-GB", {
-                  hour: "numeric",
-                  minute: "numeric",
-                  hourCycle: "h23",
-                })}
-                <b> - </b>
-                {new Date(event.end_date).toLocaleTimeString("en-GB", {
-                  hour: "numeric",
-                  minute: "numeric",
-                })}
-                <br></br>
-              </Card.Text>
-              <Card.Text></Card.Text>
+    <div className="event-background">
+      <div
+        className="d-flex pt-lg-7 justify-content-center align-items-center"
+        style={{
+          minHeight: "100vh",
+          width: "100%",
+          padding: "20% 10%",
+        }}
+      >
+        <Card className="single-event-card">
+          <Container className="m-0 p-0">
+            {error.length > 0 ? <Error msg={error}></Error> : " "}
+            <Row className="g-0 justify-content-evenly">
+              <Col sm={12} lg={6} md={12} className="single-event-image">
+                <EventImage className="img-fluid" id={id}></EventImage>
+              </Col>
+              <Col sm={6} lg={6} md={7} className="single-event-details">
+                <Card.Title>{event.name}</Card.Title>
+                <Card.Text className="event-description">
+                  {event.description}
+                </Card.Text>
+                <Card.Text className="single-event-date">
+                  <i className="far fa-calendar-alt"></i>
+                  {new Date(event.start_date).toLocaleDateString("sq-AL", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}{" "}
+                  ,{" "}
+                  {new Date(event.start_date).toLocaleTimeString("en-GB", {
+                    hour: "numeric",
+                    minute: "numeric",
+                    hourCycle: "h23",
+                  })}
+                  <b> - </b>
+                  {new Date(event.end_date).toLocaleTimeString("en-GB", {
+                    hour: "numeric",
+                    minute: "numeric",
+                  })}
+                  <br></br>
+                </Card.Text>
+                <Card.Text></Card.Text>
 
-              <Card.Text className="event-fee">
-                {event.fee == 0 ? "falas" : "$" + event.fee}
-              </Card.Text>
-              <div className="number-of-tickets d-flex flex-column align-items-center ">
-                <Form.Label style={event.fee !== 0 ? {} : { display: "none" }}>
-                  Number of tickets:
-                  <Input
-                    type="number"
-                    min="1"
-                    value={quantity}
-                    onChange={(event) => {
-                      setQuantity(event.target.value);
-                    }}
-                    style={{ maxWidth: "50%" }}
-                  />
-                </Form.Label>
-              </div>
+                <Card.Text className="event-fee">
+                  {event.fee == 0 ? "falas" : "$" + event.fee}
+                </Card.Text>
+                <div className="number-of-tickets d-flex flex-column align-items-center ">
+                  <Form.Label
+                    style={event.fee !== 0 ? {} : { display: "none" }}
+                  >
+                    Number of tickets:
+                    <Input
+                      type="number"
+                      min="1"
+                      value={quantity}
+                      onChange={(event) => {
+                        setQuantity(event.target.value);
+                      }}
+                      style={{ maxWidth: "50%" }}
+                    />
+                  </Form.Label>
+                </div>
 
-              {event.fee == 0 ? (
-                <Button
-                  variant={event.active === false ? "danger" : "primary"}
-                  disabled={event.active === false}
-                  onClick={freeBooking}
-                >
-                  {event.active === false
-                    ? "Eventi ka mbaruar"
-                    : "Konfirmo pjesemarrjen"}
-                </Button>
-              ) : (
-                <StripeCheckout
-                  currency="USD"
-                  token={onToken}
-                  stripeKey="pk_test_51LaIrHL4LctRSxODVsPwyai1eV9Zzrixcjm6kjtXpxEdRlaZvzonb9AB8iEqAdWhYLW1vUs9SsDbjGeHysJONN4B00BCENiL6T"
-                >
-                  <Button className="btn single-pay">Pay Now</Button>
-                </StripeCheckout>
-              )}
-            </Col>
-          </Row>
-        </Container>
-      </Card>
+                {event.fee == 0 ? (
+                  <Button
+                    variant={event.active === false ? "danger" : "primary"}
+                    disabled={event.active === false}
+                    onClick={freeBooking}
+                  >
+                    {event.active === false
+                      ? "Eventi ka mbaruar"
+                      : "Konfirmo pjesemarrjen"}
+                  </Button>
+                ) : (
+                  <StripeCheckout
+                    currency="USD"
+                    token={onToken}
+                    stripeKey="pk_test_51LaIrHL4LctRSxODVsPwyai1eV9Zzrixcjm6kjtXpxEdRlaZvzonb9AB8iEqAdWhYLW1vUs9SsDbjGeHysJONN4B00BCENiL6T"
+                  >
+                    <Button className="btn single-pay">Pay Now</Button>
+                  </StripeCheckout>
+                )}
+              </Col>
+            </Row>
+          </Container>
+        </Card>
+      </div>
     </div>
   );
 };
