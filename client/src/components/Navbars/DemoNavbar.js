@@ -87,7 +87,7 @@ function DemoNavbar() {
                   </Button>
                 </Nav.Link>
 
-                <Nav.Link as={Link} to="/register">
+                <Nav.Link as={Link}>
                   <Button
                     className="top-link-button top-signup-button"
                     variant="light"
