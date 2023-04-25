@@ -2,14 +2,7 @@ const bcrypt = require("bcrypt");
 const User = require("../model/user");
 const jwt = require("jsonwebtoken");
 const refreshToken = require("../model/refresh");
-const nodemailer = require("nodemailer");
 const { db } = require("../model/user");
-
-// const transporter = nodemailer.createTransport(sendgridTransport({
-//   auth:{
-//     api_user:
-//   }
-// }))
 
 const logIn = async (user) => {
   const secretKey = process.env.SECRET_KEY;
@@ -76,7 +69,5 @@ const logOut = async (userId, refresh_Token) => {
     token: refreshToken,
   });
 };
-
-// const forgotPassword =()
 
 module.exports = { logIn, logOut };

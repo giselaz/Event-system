@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 const localMongoose = require("passport-local-mongoose");
+const findOrCreate = require("mongoose-find-or-create");
+
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -36,11 +38,8 @@ const userSchema = new mongoose.Schema({
     ref: "Department",
   },
 });
-// userSchema.set("toJSON", {
-//   transform: function (doc, ret) {
-//     delete ret.password;
-//     return ret;
-//   },
-// });
+
+userSchema.plugin(localMongoose);
+userSchema.plugin(findOrCreate);
 const User = mongoose.model("User", userSchema);
 module.exports = User;
