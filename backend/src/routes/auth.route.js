@@ -18,16 +18,12 @@ route.get(
 );
 
 route.get(
-  "google/callback",
+  "/google/callback",
   passport.authenticate("google", { session: false }),
   (req, res) => {
-    res.send(`
-      <script>
-        window.opener.postMessage({
-          access_token: "${req.user.access_token}"
-        }, "http://localhost:3000");
-      </script>
-    `);
+    res.json({
+      access_token: req.user.access_token,
+    });
   }
 );
 module.exports = route;

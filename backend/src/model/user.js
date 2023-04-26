@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const localMongoose = require("passport-local-mongoose");
-const findOrCreate = require("mongoose-find-or-create");
+const findOrCreate = require("mongoose-findorcreate");
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -18,7 +18,6 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: true,
   },
   userType: {
     type: String,

@@ -22,6 +22,7 @@ const Login = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [showRegister, setShowRegister] = useState(false);
+  const [access_token, setAccessToken] = useState(null);
   const {
     register,
     handleSubmit,
@@ -37,6 +38,19 @@ const Login = () => {
   //   const password = e.target.value;
   //   setPassword(password);
   // };
+
+  async function handleGoogleSignIn() {
+    const authWindow = window.open("/auth/google", "_blank");
+    window.addEventListener("message", (event) => {
+      if (!event.data.access_token) {
+        return;
+      }
+      setAccessToken(event.data.access_token);
+    });
+
+    // Close the auth window
+    authWindow.close();
+  }
 
   async function onSubmit(data) {
     setData(JSON.stringify(data));
@@ -63,34 +77,6 @@ const Login = () => {
     // setLoading(false);
   }
 
-  // const handleLogin = (e) => {
-  //   e.preventDefault();
-
-  //   setMessage("");
-  //   setLoading(true);
-
-  //   if (checkBtn.current.context._errors.length === 0) {
-  //     AuthService.login(email, password).then(
-  //       () => {
-  //         navigate("/profile");
-  //         window.location.reload();
-  //       },
-  //       (error) => {
-  //         const resMessage =
-  //           (error.response &&
-  //             error.response.data &&
-  //             error.response.data.message) ||
-  //           error.message ||
-  //           error.toString();
-
-  //         setLoading(false);
-  //         setMessage(resMessage);
-  //       }
-  //     );
-  //   } else {
-  //     setLoading(false);
-  //   }
-  // };
   const handleRegister = () => {
     const loginCard = document.querySelector(".login-card");
     loginCard.classList.add("animate__fadeOutUp");
@@ -99,7 +85,7 @@ const Login = () => {
     }, 500);
   };
 
-  const handleLogin = () => {
+  const handleLoginUI = () => {
     setTimeout(() => {
       setShowRegister(false);
     }, 500);
@@ -118,7 +104,7 @@ const Login = () => {
           style={{ height: "100vh" }}
         >
           <Register2 className="animate__animated animate__fadeInDown register__login" />
-          <Link onClick={handleLogin}>Already have an account?</Link>
+          <Link onClick={handleLoginUI}>Already have an account?</Link>
         </Container>
       ) : (
         <Container
@@ -136,6 +122,10 @@ const Login = () => {
             </Card.Title>
             <Card.Body className="px-lg-5 py-lg-5">
               <div className="bs">
+                <button onClick={handleGoogleSignIn}>
+                  Sign in with Google
+                </button>
+                <span> OR</span>
                 <Form onSubmit={handleSubmit(onSubmit)}>
                   <FormGroup>
                     <InputGroup className="input-group-alternative mb-5">
