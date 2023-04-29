@@ -29,7 +29,6 @@ passport.use(
         return done(err, user);
       }
     );
-    done(null, { access_token: accessToken });
   })
 );
 passport.serializeUser(function (user, done) {

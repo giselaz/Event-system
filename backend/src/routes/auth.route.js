@@ -22,7 +22,7 @@ route.get(
   passport.authenticate("google", { session: false }),
   (req, res) => {
     res.json({
-      access_token: req.user.access_token,
+      message: "success",
     });
   }
 );
