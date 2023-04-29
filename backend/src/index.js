@@ -18,7 +18,7 @@ const port = process.env.PORT;
 const EventService = require("./services/admin/event.service");
 const verifyToken = require("./middleware/auth.middleware");
 app.use(express.json());
-app.use(cors());
+app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use((req, res, next) => {
   console.log("Incoming request:", req.method, req.url);
