@@ -17,6 +17,11 @@ const verifyToken = async (req, res, next) => {
   }
 };
 
+const authenticated = async (req, res, next) => {
+  const customError = new Error("you are not logged in");
+  customError.statusCode = 401;
+  !req.user ? next(customError) : next();
+};
 // const passportAuth = async () => {
 //   var strategy = new Strategy(params, function (payload, done) {
 //     var user = UserModel.findById(payload._id, function (err, user) {
@@ -39,4 +44,4 @@ const verifyToken = async (req, res, next) => {
 //     },
 //   };
 // };
-module.exports = { verifyToken };
+module.exports = { verifyToken, authenticated };

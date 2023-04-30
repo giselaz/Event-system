@@ -19,11 +19,18 @@ route.get(
 
 route.get(
   "/google/callback",
-  passport.authenticate("google", { session: false }),
-  (req, res) => {
-    res.json({
-      message: "success",
-    });
-  }
+  passport.authenticate(
+    "google",
+    { session: false },
+    {
+      successRedirect: "http://localhost:3000/home",
+    },
+    {
+      failureRedirect: "http://localhost:3000/login",
+    }
+  )
+);
+route.get("/getUser", AuthMiddleware.authenticated, (req, res) =>
+  res.send(req.user)
 );
 module.exports = route;
