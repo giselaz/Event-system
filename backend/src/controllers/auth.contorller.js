@@ -18,7 +18,7 @@ const userLogin = async (req, res) => {
       role: dBUser.role,
     };
     const token = jwt.sign(user, process.env.SECRET_KEY, { expiresIn: "3h" });
-    res.json({ token });
+    res.json({ token, user });
   } else {
     try {
       await ValidateUser.validateLogin(req.body);
