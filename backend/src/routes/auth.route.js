@@ -4,7 +4,6 @@ const AuthController = require("../controllers/auth.contorller");
 const AuthMiddleware = require("../middleware/auth.middleware");
 const UserController = require("../controllers/user.controller");
 const passport = require("./google.auth");
-
 // route.get("/auth/failure", (req, res) => {
 //   res.send("Something went wrong..");
 // });
@@ -28,7 +27,11 @@ route.get(
     {
       failureRedirect: "http://localhost:3000/login",
     }
-  )
+  ),
+  function (req, res) {
+    // Successful authentication, redirect home.
+    res.redirect("http://localhost:3000/home");
+  }
 );
 route.get("/getUser", AuthMiddleware.authenticated, (req, res) =>
   res.send(req.user)

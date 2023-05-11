@@ -6,6 +6,7 @@ const AuthMiddleware = require("../middleware/auth.middleware");
 const RoleMiddleware = require("../middleware/role.middleware");
 const DepartamentController = require("../controllers/departament.controller");
 const path = require("path");
+const localpassport = require("../middleware/passport.auth.middleware");
 
 route.get("/", DepartamentController.getAllDepartaments);
 route.post(

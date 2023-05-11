@@ -1,21 +1,29 @@
 const User = require("../model/user");
 const UserService = require("../services/admin/user.service");
 const ValidateUser = require("../validations/user.validation");
+// const passport = require("../middleware/passport.auth.middleware");
+const axios = require("axios");
+const jwt_decode = require("jwt-decode");
 
 const addUser = async (req, res) => {
-  const { value, error } = ValidateUser.validateRegister(req.body);
-
-  try {
-    const user = await UserService.CreateUser(value);
-    res.json(user);
-  } catch (err) {
-    if (error) {
-      res.status(400).json({ message: error.details[0].message });
-    } else if (err.message === "User already exist") {
-      res.status(400).json({ message: "Perdoruesi me kete email ekziston" });
-    } else res.status(500).json({ message: "internal server error" });
+  if (req.body.googleAccessToken) {
+    const decoded = jwt_decode(req.body.googleAccessToken);
+    console.log(decoded);
+  } else {
+    // const { value, error } = ValidateUser.validateRegister(req.body);
+    try {
+      const user = await UserService.CreateUser(value);
+      // res.json(user);
+    } catch (err) {
+      if (error) {
+        res.status(400).json({ message: error.details[0].message });
+      } else if (err.message === "User already exist") {
+        res.status(400).json({ message: "Perdoruesi me kete email ekziston" });
+      } else res.status(500).json({ message: "internal server error" });
+    }
   }
 };
+
 const setRole = async (req, res) => {
   if (!ValidateUser.validateRole(req.body))
     throw new Error("Please specify a valid role ");

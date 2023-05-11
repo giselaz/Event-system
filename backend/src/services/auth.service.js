@@ -1,13 +1,17 @@
 const bcrypt = require("bcrypt");
 const User = require("../model/user");
 const jwt = require("jsonwebtoken");
+const passport = require("passport");
+const passportJwt = require("passport-jwt");
+const JwtStrategy = passportJwt.Strategy;
+const ExtractJwt = passportJwt.ExtractJwt;
 const refreshToken = require("../model/refresh");
 const { db } = require("../model/user");
 
-const logIn = async (user) => {
+const generateToken = async (payload) => {
   const secretKey = process.env.SECRET_KEY;
-  const payload = await validateUser(user);
-  const refresh_Token = jwt.sign(payload, process.env.REFRESH_KEY);
+  const refreshToken = jwt.sign(payload, process.env.REFRESH_KEY);
+  const accessToken = jwt.sign(payload, secretKey, { expiresIn: "3h" });
   const refreshDB = await refreshToken.create({
     token: refresh_Token,
     user_id: payload._id,
@@ -20,11 +24,14 @@ const logIn = async (user) => {
     .catch((err) => {
       console.log(err);
     });
-
+  return { accessToken, refreshToken };
+};
+const logIn = async (user) => {
+  const payload = await validateUser(user);
+  const { accessToken, refreshToken } = generateToken(payload);
   return {
-    access_token: "Bearer " + jwt.sign(payload, secretKey, { expiresIn: "3h" }),
-    refresh_token: refresh_Token,
-    user: payload,
+    accessToken,
+    refreshToken,
   };
 };
 
