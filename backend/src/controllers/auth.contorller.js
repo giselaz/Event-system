@@ -2,22 +2,39 @@ const AuthService = require("../services/auth.service");
 const ValidateUser = require("../validations/user.validation");
 const passport = require("../middleware/passport.auth.middleware");
 const jwt = require("jsonwebtoken");
+const jwt_decode = require("jwt-decode");
+const UserModel = require("../model/user");
 
 const userLogin = async (req, res) => {
-  try {
-    await ValidateUser.validateLogin(req.body);
-    const tokens = await AuthService.logIn(req.body);
-    return res
-      .header("Authorization", tokens.accessToken)
-      .header("RefreshToken", tokens.refreshToken)
-      .status(200)
-      .json({
-        user: tokens.user,
-        access_token: tokens.accessToken,
-      })
-      .cookie("refreshToken", tokens.refreshToken, { httpOnly: true });
-  } catch (err) {
-    res.status(500).json({ message: "Internal Server error" });
+  if (req.body.googleAccessToken) {
+    const decoded = await jwt_decode(req.body.googleAccessToken);
+    const dBUser = await UserModel.findOne({ email: decoded.email });
+    if (!dBUser) {
+      res.status(400).json({ message: "User with this email doesnt exist" });
+    }
+    const user = {
+      email: dBUser.email,
+      id: dBUser._id,
+      role: dBUser.role,
+    };
+    const token = jwt.sign(user, process.env.SECRET_KEY, { expiresIn: "3h" });
+    res.json({ token });
+  } else {
+    try {
+      await ValidateUser.validateLogin(req.body);
+      const tokens = await AuthService.logIn(req.body);
+      return res
+        .header("Authorization", tokens.accessToken)
+        .header("RefreshToken", tokens.refreshToken)
+        .status(200)
+        .json({
+          user: tokens.user,
+          access_token: tokens.accessToken,
+        })
+        .cookie("refreshToken", tokens.refreshToken, { httpOnly: true });
+    } catch (err) {
+      res.status(500).json({ message: "Internal Server error" });
+    }
   }
 };
 
