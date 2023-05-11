@@ -17,6 +17,7 @@ const addUser = async (req, res) => {
         email: decoded.email,
         name: decoded.given_name,
         surname: decoded.family_name,
+        googleId: decoded.sub,
       });
       res.json({ user });
     }
