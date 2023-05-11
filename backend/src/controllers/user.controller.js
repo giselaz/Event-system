@@ -6,11 +6,22 @@ const axios = require("axios");
 const jwt_decode = require("jwt-decode");
 
 const addUser = async (req, res) => {
+  // console.log(req.body);
   if (req.body.googleAccessToken) {
     const decoded = jwt_decode(req.body.googleAccessToken);
-    console.log(decoded);
+    const dBuser = User.findOne({ email: decoded.email });
+    if (dBuser) {
+      res.status(400).json({ message: "User with this email already exists" });
+    } else {
+      const user = User.create({
+        email: decoded.email,
+        name: decoded.given_name,
+        surname: decoded.family_name,
+      });
+      res.json({ user });
+    }
   } else {
-    // const { value, error } = ValidateUser.validateRegister(req.body);
+    const { value, error } = ValidateUser.validateRegister(req.body);
     try {
       const user = await UserService.CreateUser(value);
       // res.json(user);
@@ -18,7 +29,9 @@ const addUser = async (req, res) => {
       if (error) {
         res.status(400).json({ message: error.details[0].message });
       } else if (err.message === "User already exist") {
-        res.status(400).json({ message: "Perdoruesi me kete email ekziston" });
+        res
+          .status(400)
+          .json({ message: "User with this email already exists" });
       } else res.status(500).json({ message: "internal server error" });
     }
   }
