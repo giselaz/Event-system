@@ -10,17 +10,17 @@ const addUser = async (req, res) => {
   if (req.body.googleAccessToken) {
     const decoded = jwt_decode(req.body.googleAccessToken);
     const dBuser = User.findOne({ email: decoded.email });
-    if (dBuser) {
-      res.status(400).json({ message: "User with this email already exists" });
-    } else {
-      const user = User.create({
-        email: decoded.email,
-        name: decoded.given_name,
-        surname: decoded.family_name,
-        googleId: decoded.sub,
-      });
-      res.json({ user });
-    }
+    // if (dBuser) {
+    //   res.status(400).json({ message: "User with this email already exists" });
+    // } else {
+    const user = User.create({
+      email: decoded.email,
+      name: decoded.given_name,
+      surname: decoded.family_name,
+      googleId: decoded.sub,
+    });
+    res.json({ user });
+    // }
   } else {
     const { value, error } = ValidateUser.validateRegister(req.body);
     try {
