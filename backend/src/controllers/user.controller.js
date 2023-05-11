@@ -19,6 +19,9 @@ const addUser = async (req, res) => {
       surname: decoded.family_name,
       googleId: decoded.sub,
     });
+    user.save().then(() => {
+      console.log("user Created");
+    });
     res.json({ user });
     // }
   } else {
