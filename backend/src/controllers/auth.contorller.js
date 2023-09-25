@@ -18,20 +18,18 @@ const userLogin = async (req, res) => {
       role: dBUser.role,
     };
     const token = jwt.sign(user, process.env.SECRET_KEY, { expiresIn: "3h" });
-    res.json({ token, user });
+    res.send(user);
   } else {
     try {
-      await ValidateUser.validateLogin(req.body);
+      ValidateUser.validateLogin(req.body);
       const tokens = await AuthService.logIn(req.body);
-      return res
+      res
         .header("Authorization", tokens.accessToken)
-        .header("RefreshToken", tokens.refreshToken)
-        .status(200)
-        .json({
-          user: tokens.user,
-          access_token: tokens.accessToken,
-        })
-        .cookie("refreshToken", tokens.refreshToken, { httpOnly: true });
+        .cookie("refreshToken", tokens.refreshToken, { httpOnly: true })
+        .cookie("accessToken", tokens.accessToken, { httpOnly: true });
+      res.status(200).json({
+        access_token: tokens.accessToken,
+      });
     } catch (err) {
       res.status(500).json({ message: "Internal Server error" });
     }
