@@ -1,46 +1,18 @@
 const BookingService = require("../services/booking.service");
 const PDFDocument = require("pdfkit");
-const fs = require("fs");
-const path = require("path");
-const nodemailer = require("nodemailer");
-const dotenv = require("dotenv");
-
+const fs = require("fs"); 
+const transporter = require("../utils/transporter");
+const generateTicket = require("../utils/generatePdf");
 const createBooking = async (req, res) => {
-  const booking = await BookingService.bookLiveEvent(
+  await BookingService.bookLiveEvent( 
     req.user,
     req.body.id,
     req.body.quantity,
     req.body.token
   ).then((booking) => {
-    const ticketFileName = "ticket" + booking._id + ".pdf";
-    const doc = new PDFDocument();
-    const fileStream = fs.createWriteStream(ticketFileName);
-    doc.pipe(fileStream);
-    res.setHeader(
-      "Content-disposition",
-      `attachment; filename=${ticketFileName}`
-    );
-    const event_date = new Date(booking.event.start_date).toLocaleDateString(
-      "sq-AL",
-      { year: "numeric", month: "long", day: "numeric" }
-    );
-    doc.fontSize(20).text(`Booking Details for ${booking.event.name}`);
-    doc.fontSize(16).text(`Event Date: ${event_date}`);
-    doc.fontSize(16).text(`Quantity: ${booking.quantity}`);
-    doc.fontSize(16).text(`Total Amount: ${booking.total_amount}`);
-
-    doc.end();
+    const fileStream = generateTicket(booking,res);
     fileStream.on("finish", () => {
       console.log(`Saved booking details to ${ticketFileName}`);
-
-      const transporter = nodemailer.createTransport({
-        service: "gmail",
-        auth: {
-          user: "test199tests@gmail.com",
-          pass: process.env.GOOGLE_PASSWORD,
-        },
-      });
-
       const mailOptions = {
         from: "test199tests@gmail.com",
         to: `${req.body.token.email}`,
@@ -73,7 +45,6 @@ const bookOnlineEvent = async (req, res) => {
       req.user._id,
       req.body.id
     ).then((booking) => {
-      // console.log(booking.user);
       const transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {

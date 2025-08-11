@@ -9,16 +9,17 @@ dotenv.config();
 const mongoose = require("mongoose");
 const UserRoute = require("./routes/user.route");
 const AuthRoute = require("./routes/auth.route");
-const DepartmentRoute = require("./routes/departamenti.route");
+const CategoryRoute = require("./routes/category.route");
 const BookingRoute = require("./routes/booking.route");
 const RoleRoute = require("./routes/role.route");
+const EventRoute = require('./routes/event.routes');
+const VendorRoute = require('./routes/vendor.route');
 const Dbconnect = require("./utils/db");
-
 const port = process.env.PORT;
-const EventService = require("./services/admin/event.service");
-const verifyToken = require("./middleware/auth.middleware");
+// const EventService = require("./services/admin/event.service");
+// const verifyToken = require("./middleware/auth.middleware");
 app.use(express.json());
-app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use((req, res, next) => {
   console.log("Incoming request:", req.method, req.url);
@@ -27,20 +28,17 @@ app.use((req, res, next) => {
 
 // app.use('/events',EventRoute)
 app.use("/users", UserRoute);
+app.use("/vendors",VendorRoute);
 app.use("/auth", AuthRoute);
-app.use("/departament", DepartmentRoute);
+app.use("/categories", CategoryRoute);
+app.use("/events",EventRoute);
 app.use("/bookings", BookingRoute);
 app.use("/roles", RoleRoute);
 app.use("/images", express.static(path.join(__dirname, "images")));
 
-app.use("/images", express.static(path.join(__dirname, "images")));
-app.get("/events/:id/images", async (req, res) => {
-  await EventService.getEventImage(req.params.id).then((imagePath) => {
-    res.sendFile(path.join(__dirname, "images", imagePath));
-  });
-});
 
-job.start();
+
+
 app.listen(4000 || port, () => {
   console.log(`Server Started at ${port}`);
 });

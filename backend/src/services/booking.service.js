@@ -1,4 +1,4 @@
-const { ConnectionPoolClosedEvent } = require("mongodb");
+// const { ConnectionPoolClosedEvent } = require("mongodb");
 const { v4: uuid } = require("uuid");
 const Booking = require("../model/booking");
 const Event = require("../model/event");
@@ -6,32 +6,13 @@ const User = require("../model/user");
 const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY);
 const Paricipant = require("../model/participant");
 
-const bookLiveEvent = async (user, eventId, quantity, token) => {
+const bookLiveEvent = async (userId, eventId, quantity, token) => {
   const event = await Event.findById(eventId);
-  console.log(event);
-  const userDb = await User.findOne({ _id: user._id }).select(
-    "-password -bookings"
-  );
   if (!event.active) {
     throw new Error("event has ended");
-  } else if (event.fee == 0) {
-    const amount = 0;
-    console.log(event);
-    const booking = new Booking({
-      event: event,
-      user: userDb,
-      total_amount: amount,
-      quantity,
-    });
-    booking
-      .save()
-      .then(() => {
-        console.log("Created Booking");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    return booking;
+  }
+   if (event.fee == 0) {
+   bookFreeEvent(eventId,userId);
   } else {
     try {
       const customer = await stripe.customers.create({
@@ -54,17 +35,17 @@ const bookLiveEvent = async (user, eventId, quantity, token) => {
       if (payment) {
         const booking = new Booking({
           event: event,
-          user: user._id,
+          user: userId,
           total_amount: event.fee * quantity,
           quantity,
           transactionid: uuid(),
         });
-        booking.save().then(() => console.log("Paid booking created"));
-        const participant = new Paricipant({
-          event: event,
-          user: userDb,
+        booking.save().then(() => {
+          
+          console.log("Paid booking created") 
+        
         });
-        participant.save().then(() => console.log("participant created"));
+       
         return booking.populate("event");
       }
     } catch (error) {
@@ -73,45 +54,59 @@ const bookLiveEvent = async (user, eventId, quantity, token) => {
   }
 };
 
+const bookFreeEvent =  (event,userId) => {
+  const amount = 0;
+  const booking = new Booking({
+    event: event,
+    user: userId,
+    total_amount: amount,
+    quantity,
+  });
+  booking
+    .save()
+    .then(() => {
+      event.participants.push(userId);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  return booking;
+}
 const bookOnlineEvent = async (userId, eventId) => {
   const event = await Event.findById(eventId);
-  const userDb = await User.findOne({ _id: userId }).select(
-    "-password -bookings"
-  );
-  const bookingUser = await Paricipant.findOne({
-    user: userId,
-    event: eventId,
-  });
-  console.log(userDb);
+  // const bookingUser = await Paricipant.findOne({
+  //   user: userId,
+  //   event: eventId,
+  // });
   if (!event.active) {
-    throw new Error("Eventi ka mbaruar");
-  } else if (bookingUser) {
-    throw new Error("Pjesemarrja juaj eshte konfirmuar tashme");
+    throw new Error("Event is no longer active");
+  } else if (event.participants.includes(userId)) {
+    throw new Error("You are already a participant");
   } else {
-    const booking = new Booking({
+    const bookingDb = new Booking({
       event,
-      user: userDb,
+      user: userId,
     });
 
-    booking
+    bookingDb
       .save()
-      .then(() => console.log("Online booking created"))
+      .then(() => {
+        event.participants.push(userId);
+      })
       .catch((err) => console.log(err));
-    const participant = new Paricipant({
-      event,
-      user: userDb,
-    });
-    participant.save().then(() => console.log("participant created"));
-    return booking;
+
+    return bookingDb;
   }
 };
 
 const removeBooking = async (userId, eventId) => {
   try {
-    await Paricipant.deleteOne({
-      user: userId,
-      event: eventId,
-    });
+   const event = await Event.findById(eventId);
+   const userIndex = event.participants.indexOf(userId);
+   if(userIndex)
+   {
+    event.participants.splice(userIndex,userId);
+   }
     await Booking.deleteOne({
       user: userId,
       event: eventId,
@@ -122,16 +117,13 @@ const removeBooking = async (userId, eventId) => {
   }
 };
 
-const addParticipant = (eventId, userId) => {
+const addParticipant = async (eventId, userId) => {
   try {
-    const participant = new Paricipant({
-      event: eventId,
-      user: userId,
-    });
-    participant.save().then(() => console.log("Participant Created"));
-    return participant;
+    const event = await Event.findById(eventId);
+    event.participants.push(userId);
+    return event.participants;
   } catch (err) {
     console.log(err);
   }
 };
-module.exports = { bookLiveEvent, bookOnlineEvent, removeBooking };
+module.exports = { bookLiveEvent, bookOnlineEvent, removeBooking,addParticipant };

@@ -4,11 +4,14 @@ async function checkAdmin(req, res, next) {
 
   next();
 }
-
-async function checkPedagog(req, res, next) {
-  if (req.user.role !== "admin" || req.user.role !== "pedagog")
+async function checkOrganizer(req, res, next) {
+  if (req.user.role !== "admin" && req.user.role !== "organizer" && req.user.vendor !== req.params.vendorId)
     return res.status(403).json("User not authorized");
-
   next();
 }
-module.exports = { checkAdmin, checkPedagog };
+async function checkVendor(req, res, next) {
+  if (req.user.role !== "admin" && req.user.role !== "vendor" && req.user.vendor !== req.params.vendorId)
+    return res.status(403).json("User not authorized");
+  next();
+}
+module.exports = { checkAdmin, checkOrganizer ,checkVendor};

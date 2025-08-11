@@ -5,7 +5,6 @@ import axiosInstance from "../../services/helper";
 
 const EventImage = (props) => {
   const eventId = props.id;
-  console.log(eventId);
   const [image, setImage] = useState("");
 
   useEffect(() => {
@@ -13,7 +12,6 @@ const EventImage = (props) => {
       .get(`/events/${eventId}/images`, { responseType: "blob" })
       .then((res) => {
         setImage(URL.createObjectURL(res.data));
-        console.log(image);
       })
       .catch((err) => console.log(err));
   }, [eventId]);

@@ -1,5 +1,4 @@
 
-
 const filterImage =(req,file,cb)=>{
     if(file.mimetype === 'image/png' ||
     file.mimetype === 'image/jpg' ||

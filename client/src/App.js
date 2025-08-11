@@ -22,7 +22,6 @@ import "./assets/vendor/font-awesome/css/font-awesome.min.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
 function App() {
-  const [backendData, SetBackendData] = useState("");
   return (
     <div className="App">
       {/* <Route exact path="/" component={Landing} /> */}
@@ -31,14 +30,14 @@ function App() {
         <Route path="/" exact element={<Landing />} />
         <Route path="/register" element={<Register2 />} />
         <Route path="/login" exact element={<Login />} />
-        <Route element={<PrivateRoute />}>
-          <Route path="/profile" element={<ProfileScreen />} />
-        </Route>
+        {/* <Route element={<PrivateRoute />}> */}
+        <Route path="/profile" element={<ProfileScreen />} />
+        {/* </Route> */}
         <Route
           path="/departament/:departamentId/events"
           element={<EventScreen />}
         />
-        <Route path="/events/:eventId" element={<SingleEventScreen />} />
+        <Route path="/events/:eventId" element={<SingleEventScreen />} /> 
         <Route element={<RouteAdmin />}>
           <Route path="/admin" element={<AdminScreen />} />
           <Route

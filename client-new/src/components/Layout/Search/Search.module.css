@@ -1,0 +1,125 @@
+.searchContainer {
+  width: 60rem;
+}
+.form {
+  position: relative;
+}
+
+.searchInnerContainer {
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Ensure elements are spaced appropriately */
+  padding: 10px 20px; /* Add consistent inner padding */
+  border-radius: 0; /* Rounded corners for better aesthetics */
+  /* box-shadow: 10px 10px; */
+  position: relative;
+}
+
+/* .form:before{
+    height: 15px;
+    width: 98%;
+    top:74px;
+    left:10px;
+    right: 40px;
+    content: "";
+    position: absolute;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.15);
+  } */
+.inputContainer {
+  display: flex;
+  align-items: baseline;
+  padding-left: 4px;
+  border: none;
+  border-radius: 0;
+  border-right: 1px solid #ddd;
+}
+
+.inputContainer input {
+  border-left: none;
+  height: 100%;
+  padding: 10px; /* Ensure padding inside input */
+  border: none;
+  border-radius: 0; /* Rounded corners for input */
+}
+
+.inputContainer.locationInput,
+.inputContainer.categoryInput {
+  width: 30%;
+}
+
+.inputContainer i {
+  height: 30px; /* Slightly larger for better visibility */
+  width: 30px;
+  color: #33338b;
+  font-weight: bold;
+  margin-right: 8px; /* Space between icon and input */
+}
+
+.searchButtonContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.searchButtonContainer button {
+  border-radius: 2rem;
+  background: #33338b;
+  color: white;
+  height: 2.5rem;
+  width: 2.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  cursor: pointer;
+}
+
+.searchButtonContainer i {
+  height: 24px;
+  width: 24px;
+  color: white; /* Keep the icon color consistent with the button */
+}
+
+.searchButtonContainer button:hover {
+  background: #4444aa; /* Subtle hover effect */
+}
+
+.searchInnerContainer select {
+  border: none;
+  height: 100%;
+  padding: 8px;
+  border-radius: 5px;
+  background-color: #f9f9f9; /* Light background for dropdown */
+  opacity: 0.8; /* Slightly transparent for a modern look */
+}
+
+@media (max-width: 900px) {
+  .searchContainer {
+    width: 100%; /* Full width on smaller screens */
+    padding: 0 10px; /* Add some padding for better spacing */
+  }
+  .inputContainer.locationInput,
+  .inputContainer.categoryInput {
+    width: 100%;
+  }
+
+  .searchInnerContainer {
+    flex-direction: column; /* Stack elements vertically on small screens */
+  }
+
+  .inputContainer {
+    width: 100%; /* Full width for inputs on small screens */
+    margin-bottom: 10px; /* Space between inputs */
+  }
+
+  .searchButtonContainer {
+    width: 100%; /* Full width for button container */
+    justify-content: center; /* Center the button on small screens */
+  }
+  .inputContainer{
+    border-right: none;
+    border-bottom: 1px solid #ddd;
+  }
+}

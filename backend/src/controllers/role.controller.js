@@ -7,7 +7,7 @@ const postRole = async (req, res) => {
 };
 
 const getAllRoles = async (req, res) => {
-  const roles = await RoleService.getAllFaculty();
+  const roles = await RoleService.getAllRoles();
 
   res.send(roles);
 };

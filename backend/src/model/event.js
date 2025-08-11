@@ -46,20 +46,27 @@ const eventSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  department: {
+  vendor: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Departament",
+    ref: "vendor",
   },
+  category: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Category",
+    },
+  ],
   location: {
-    type: "string",
-    requiredL: true,
+    name: { type: String },
+    latitude: { type: Number },
+    longitude: { type: Number },
   },
-  // participants: [
-  //   {
-  //     type: mongoose.Schema.Types.ObjectId,
-  //     ref: "User",
-  //   },
-  // ],
+  participants: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
 });
 const Event = mongoose.model("Event", eventSchema);
 

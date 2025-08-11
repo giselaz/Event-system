@@ -1,0 +1,90 @@
+.homeCategoryContainer {
+  background: linear-gradient(
+    63deg,
+    rgba(75, 37, 170, 1) 50%,
+    rgba(92, 44, 169, 1) 86%,
+    rgba(101, 48, 169, 1) 94%
+  );
+  color: white;
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+}
+.homeCategoryContainer .categoryHeader {
+  font-size: 32px;
+  font-family: "Caveat";
+  font-weight: 700;
+}
+
+.homeCategoryContainer .categoryBrowse {
+  font-weight: 900;
+  font-family: "Gothic A1";
+  font-size: 41px;
+}
+.carouselContainer {
+  position: relative;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.carousel {
+  display: flex;
+  justify-content: center;
+  scroll-behavior: smooth;
+  overflow: hidden;
+  gap: 15px;
+  padding: 20px;
+  width: 60%;
+  transition: transform 0.3s ease;
+  cursor: grab;
+  position: relative;
+}
+
+.carousel:active {
+  cursor: grabbing;
+}
+
+.carousel-item {
+  min-width: 180px;
+  height: 150px;
+  background-color: #eee;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  user-select: none; /* Prevent text selection while dragging */
+}
+
+.arrowBtn {
+  background: none;
+  border: 1px solid #fff;
+  color: #eee;
+  font-size: 1rem;
+  cursor: pointer;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 2.5rem;
+  position: absolute;
+    top: 60%;
+    transform: translateY(-50%);
+    z-index: 2;
+}
+.arrowBtn:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease-in-out;
+}
+.left {
+  left: 15%;
+}
+
+.right {
+  right: 15%;
+}

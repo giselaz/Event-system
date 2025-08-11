@@ -8,7 +8,7 @@ const validateRegister = (body) => {
     password: Joi.string().min(6).max(20).required(),
     departament: Joi.string(),
   });
-
+    
   return schema.validate(body);
 };
 const validateLogin = (body) => {

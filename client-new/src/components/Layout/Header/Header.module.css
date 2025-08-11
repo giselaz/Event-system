@@ -1,0 +1,88 @@
+.navbarCustom
+{
+    background-color: #38065b;
+    justify-content: space-between;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+.navbarCustom .navContainer
+{
+    display: flex;
+    align-items: center;
+    margin:0;
+
+}
+
+.logo{
+    width: 300px;
+    filter: invert(100%) brightness(1000%);
+}
+.navCollapse
+{
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+.navList
+{
+    flex: 1 1;
+    justify-content: center;
+    gap: 2rem;
+    display: flex;
+}
+
+.navItem{
+    color:white !important;
+    font-family: "Gothic A1";
+    font-weight: 700;
+    text-transform: uppercase;
+    text-decoration: none;
+
+}
+.navItem a {
+    color:white;
+    text-decoration: none;
+}
+.navItem:hover{
+    opacity: .7 !important;
+    /* color:unset(); */
+}
+.navItem a:hover{
+    opacity: .7 !important;
+    color:white;
+}
+.navButton
+{
+    text-align: center;
+    padding: 13px 20px 10px 20px;
+    font-size: 1rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    background-color: transparent;
+    border-style: solid;
+    border-width: 2px 2px 2px 2px;
+    border-color: #FFFFFF;
+    border-radius: 6px 6px 6px 6px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease; 
+
+}
+.navButton:hover{
+    background-color: white;
+    color:#38065B;
+    transition: 100ms;
+}
+/* .nav-link.user-nav{
+    border-radius: 50px;
+    border:2px solid white;
+    font-size: 20px;
+} */
+/* .nav-link.user-nav:hover{
+    background-color: white;
+} */
+
+/* .nav-link.user-nav:hover svg{
+
+    color:black;
+} */

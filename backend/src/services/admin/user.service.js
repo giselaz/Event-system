@@ -5,16 +5,13 @@ const Event = require("../../model/event");
 
 const CreateUser = async (user) => {
   if (await User.findOne({ email: user.email })) {
-    throw new Error("User already exist");
+    throw new Error("User already exist"); 
   } else {
+    // create user with basic auth username+password
     const salt = await bcrypt.genSalt(10);
-    const userDb = new User({
-      name: user.name,
-      surname: user.surname,
-      email: user.email,
-      password: user.password,
-      departament: user.departament,
-    });
+    const userDb = new User(
+      user
+    );
     userDb.password = await bcrypt.hash(user.password, salt);
     const { password, ...responseUser } = userDb._doc;
     userDb
@@ -28,6 +25,19 @@ const CreateUser = async (user) => {
     return responseUser;
   }
 };
+const createGoogleUser = async (user)=>{
+  if (await User.findOne({ email: user.email })) {
+    throw new Error("User already exist"); 
+  }
+  // create user without password only with google auth
+  const newUser = await User.create(user);
+  newUser.save().then((user)=>{
+    return user;
+  }).catch(err)
+  {
+      return err;
+  }
+}
 const setUserRole = async (userId, data) => {
   const role = await User.updateOne(
     { _id: userId },
@@ -36,6 +46,15 @@ const setUserRole = async (userId, data) => {
   );
   return role;
 };
+
+const verifyEmail = async (userId) =>
+{
+  const user = await User.findById(userId)
+  if (!user) {
+    throw new Error("User does not exist");
+  }
+  return user;
+}
 const getUserInfo = (userId) => {
   const user = User.findById(userId).select("-password").populate("bookings");
 
@@ -49,7 +68,7 @@ const getAdminEvents = async (userId) => {
     const events = await Event.find({
       created_By: userId,
     })
-      .populate("department")
+      .populate("vendor")
       .exec();
     console.log(events);
     return events;
@@ -70,4 +89,6 @@ module.exports = {
   getUserInfo,
   getAllBookings,
   getAdminEvents,
+  verifyEmail,
+  createGoogleUser
 };

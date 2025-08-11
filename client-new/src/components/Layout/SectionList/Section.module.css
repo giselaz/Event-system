@@ -1,0 +1,25 @@
+.eventsTitle h1{
+    font-size: 42px;
+    font-family: 'Caveat';
+    font-weight: 700;
+    color:rgb(254, 38, 118);
+}
+.eventsTitle h2{
+    font-family: 'Gothic A1';
+    font-size: 50px;
+    font-weight: 900;
+}
+.eventsContainer
+{
+padding-top:80px;
+background: rgb(243,240,251);
+background: linear-gradient(63deg, rgba(243,240,251,1) 15%, rgba(226,222,246,1) 100%);
+padding-bottom: 50px;
+}
+.paginationButton button{
+width: 300px;
+font-size: 18px;
+padding-top:20px;
+padding-bottom:20px;
+/* font-weight: 900; */
+}

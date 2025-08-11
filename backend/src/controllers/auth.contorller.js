@@ -16,7 +16,7 @@ const userLogin = async (req, res) => {
       email: dBUser.email,
       id: dBUser._id,
       role: dBUser.role,
-    };
+    }; 
     const token = jwt.sign(user, process.env.SECRET_KEY, { expiresIn: "3h" });
     res.send(user);
   } else {
@@ -55,6 +55,7 @@ const userLogin = async (req, res) => {
 //     } catch (err) {}
 //   });
 // };
+
 const userLogOut = async (req, res) => {
   const refreshToken = req.header("refreshToken");
   if (refreshToken.startsWith("Bearer ")) {

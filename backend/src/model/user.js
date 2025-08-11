@@ -1,11 +1,11 @@
+const { required } = require("joi");
 const mongoose = require("mongoose");
 const localMongoose = require("passport-local-mongoose");
-
-const bcrypt = require("bcrypt");
 
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
+    required:true
   },
   surname: {
     type: String,
@@ -23,9 +23,12 @@ const userSchema = new mongoose.Schema({
   googleId: {
     type: String,
   },
+  isVerified:{
+    type: Boolean,
+  },
   userType: {
     type: String,
-    enum: ["user", "admin", "pedagog"],
+    enum: ["user", "admin", "organizer","vendor"],
     default: "user",
   },
   userRole: {
@@ -33,29 +36,15 @@ const userSchema = new mongoose.Schema({
     ref: "roles",
     required: true,
     default: "63ea0931adfa3d88e6553286",
-  },
-  bookings: [{ type: mongoose.Schema.ObjectId, ref: "Booking" }],
+  }, 
+  // bookings: [{ type: mongoose.Schema.ObjectId, ref: "Booking",required:true }],
 
-  departament: {
+  vendor: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Department",
+    ref: "vendor",
   },
 });
 
 userSchema.plugin(localMongoose);
-// userSchema.plugin(findOrCreate);
-// userSchema.pre("save", async function (next) {
-//   const user = this;
-//   const salt = await bcrypt.genSalt(10);
-//   const hash = await bcrypt.hash(user.password, salt);
-//   this.password = hash;
-//   next();
-// });
-// UserSchema.methods.isValidPassword = async function (password) {
-//   const user = this;
-//   const compare = await bcrypt.compare(password, user.password);
-
-//   return compare;
-// };
 const User = mongoose.model("User", userSchema);
 module.exports = User;

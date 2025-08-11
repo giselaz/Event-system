@@ -1,0 +1,129 @@
+.eventCard
+{
+    margin-bottom: 30px;
+    border-radius: 12px;
+    -webkit-transition: all 0.5s;
+    transition: all 0.5s;
+    overflow: hidden;
+    border-color: transparent;
+    flex: 1 1 400px;
+    text-align: left;
+    /* min-height: 200px; /* Ensures cards are at least this height */
+    max-height: 400px; 
+    transition: all 0.3s ease-in-out;
+     animation-duration: 4s;
+  animation-delay: 2s;
+}
+
+.eventCard:hover
+{
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    transform: translateY(-5px);
+}
+
+.horizontalCard
+{
+    flex-direction: row;
+    max-height: 14rem;
+    transition: all 0.3s ease-in-out;
+
+}
+.horizontalCard img{
+    width: 50%;
+}
+.eventCard .cardBody{
+    padding: 26px 30px 22px;
+    background-color: #ffffff;
+    border-radius: 0 0 12px 12px;
+    font-size: 1.05rem;
+
+}
+.cardTitle
+{
+    font-size: 1.05rem;
+    color: #283746;
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+.eventCard .eventImage
+{
+    min-height: 190px;
+    position: relative;
+    aspect-ratio: 1/2;
+    object-fit: cover;
+
+}
+.eventCard .card-body{
+    padding: 26px 30px 22px;
+    background-color: #ffffff;
+    border-radius: 0 0 12px 12px;
+}
+.cardDate{
+    display: flex;
+    gap:10px;
+    font-weight: 400;
+    line-height: 26px;
+    font-size: 14px;
+    color:rgb(93, 97, 106);
+    font-style: normal;
+
+}
+.cardDate svg
+{
+    width: 27px;
+}
+.eventCard .cardFooter{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom:30px;
+    padding-top: 2rem;
+}
+.eventCard .cardFooter p{
+    font-weight: 400;
+    font-size: 16px;
+}
+.eventCard .cardFooter button{
+    padding: 13px 20px 9px;
+    display: inline-block;
+    border: 2px solid #2f2f89;
+    font-size: 13px;
+    line-height: 14px;
+    border-radius: 6px;
+    color: #2f2f89;
+    font-weight: 700;
+    text-transform: uppercase;
+    position: relative;
+    top: -8px;
+}
+.cardFooter p {
+color:rgb(93, 97, 106);
+font-family: "Gothic A1";
+font-weight: 400;
+}
+.eventVendor
+{
+    color:rgb(254, 38, 118);
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 26px;
+}
+
+.categoryIcon
+{
+    border-radius: 50px;
+    background: purple;
+    width: 50px;
+    padding: 8px;
+    color: white;
+    font-size: 20px;
+}
+
+.carouselBody
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}

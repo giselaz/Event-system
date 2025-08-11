@@ -1,0 +1,17 @@
+.container {
+  display: flex;
+  min-height: 100vh;
+  margin: 0 auto;
+    justify-content: center;
+    align-items: center;
+}
+.card {
+  width: 40rem;
+  min-height: 50rem;
+}
+
+.card .cardTitle {
+  color: var(--main-title);
+  font-size: 2.5rem;
+  font-weight: bold;
+}

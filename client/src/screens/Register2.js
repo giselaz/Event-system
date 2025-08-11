@@ -2,20 +2,25 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import Loader from "../components/Loader";
-import Container from "react-bootstrap/Container";
 import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
 import FormGroup from "react-bootstrap/FormGroup";
 import InputGroup from "react-bootstrap/InputGroup";
 import Error from "../components/Error";
 import Success from "../components/Success";
-import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { GoogleLogin } from "@react-oauth/google";
+import jwt_decode from "jwt-decode";
+import { signUp, signUpGoogle } from "../actions/auth";
 
 function Register2(props) {
   const [data, setData] = useState("");
   const [options, setOptions] = useState([]);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch("/departament")
@@ -25,7 +30,7 @@ function Register2(props) {
     options.map((option) => {
       console.log(option.emri);
     });
-  }, []);
+  }, [data]);
 
   const {
     register,
@@ -53,7 +58,25 @@ function Register2(props) {
       }
     }
   };
+  const googleSuccess = async (res) => {
+    const accessToken = res?.credential;
+    var decoded = await jwt_decode(res?.credential);
+    const { given_name, family_name, email } = decoded;
 
+    const user = {
+      name: given_name,
+      surname: family_name,
+      email, 
+    };
+    try {
+      dispatch(signUpGoogle(accessToken, navigate, setError));
+      // dispatch({ type: "AUTH", data: { user, token } });
+      // navigate("/");
+    } catch (err) {}
+  };
+  const googleError = () => {
+    console.log("Login Failed");
+  };
   return (
     <Card className={props.className}>
       {error.length > 0 && <Error msg={error}></Error>}
@@ -61,6 +84,12 @@ function Register2(props) {
       <Card.Title className=" pt-4">Register</Card.Title>
       <Card.Body className="px-lg-5 py-lg-5">
         <div className="bs">
+          <div
+            className="google-login d-flex justify-content-center"
+            style={{ marginBottom: "1rem" }}
+          >
+            <GoogleLogin onSuccess={googleSuccess} onError={googleError} />
+          </div>
           <Form onSubmit={handleSubmit(onSubmit)}>
             <FormGroup>
               <InputGroup className="input-group-alternative mb-3">
@@ -69,14 +98,14 @@ function Register2(props) {
                 </InputGroup.Text>
                 <Form.Control
                   type="text"
-                  className=" is-invalid"
+                  // className=" is-invalid"
                   placeholder="Emri"
                   {...register("name", { required: true })}
                 />
               </InputGroup>
             </FormGroup>
             {errors.name && (
-              <p style={{ color: "red" }}>Emri nuk duhet te jete bosh.</p>
+              <p style={{ color: "red" }}>Name should not be empty.</p>
             )}
             <FormGroup>
               <InputGroup className="input-group-alternative mb-3">
@@ -130,7 +159,7 @@ function Register2(props) {
                   autoComplete="off"
                   {...register("password", {
                     required: true,
-                    pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,15}$/,
+                    // pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,15}$/,
                   })}
                 />
               </InputGroup>

@@ -3,18 +3,26 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { BrowserRouter, Switch } from "react-router-dom";
-// // import "./assets/css/argon-design-system-react.css";
-// import "./assets/vendor/nucleo/css/nucleo.css";
-// import "./assets/vendor/font-awesome/css/font-awesome.min.css";
-// import "./assets/scss/argon-design-system-react.scss";
+import { BrowserRouter } from "react-router-dom";
+import { GoogleOAuthProvider } from "@react-oauth/google";
+import { Provider } from "react-redux";
+import { createStore, applyMiddleware, compose } from "redux";
+import { reducers } from "./redux/reducers";
+import thunk from "redux-thunk";
+
+const store = createStore(reducers, compose(applyMiddleware(thunk)));
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
+
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <Provider store={store}>
+      <BrowserRouter>
+        <GoogleOAuthProvider clientId="172729426923-ochh153uhjnspnfu6e4maofb794q42t1.apps.googleusercontent.com">
+          <App />
+        </GoogleOAuthProvider>
+      </BrowserRouter>
+    </Provider>
   </React.StrictMode>
 );
 

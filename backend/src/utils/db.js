@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 const mongoString = process.env.DATABASE_URL;
-mongoose.connect(mongoString);
+mongoose.connect(mongoString, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  ssl: true,
+});
 const database = mongoose.connection;
 
 database.on("error", (error) => {

@@ -1,0 +1,28 @@
+
+.containerWrapper
+{
+    background: var(--main-bg-color);
+
+}
+.gridContainer{
+    padding-top:100px;
+}
+.eventContentWrap
+{
+    padding:45px;
+    border:none;
+    border-radius: 25px;
+    
+}
+.eventContentWrap img{
+    object-fit: contain;
+    border-radius: 25px;
+    height: 400px;
+    border-radius: 25px;
+}
+.cardBody {
+    text-align: left;
+}
+.cardBody span{
+    font-weight: bold;
+}

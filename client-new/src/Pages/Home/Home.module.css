@@ -1,0 +1,76 @@
+.posterContainer {
+  background-image: url("../../assets/images/hero_area_image_3.jpg") !important;
+  background-size: cover;
+  background-repeat: no-repeat;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  padding: 10rem 0 5rem 0;
+}
+
+.posterInnerSection {
+  display: flex;
+  flex-direction: column;
+  align-content: flex-start;
+  flex-wrap: wrap;
+}
+.posterFirstText {
+  font-family: "Caveat";
+  font-size: 2.63rem;
+  color: #6dffff;
+  text-align: left;
+}
+
+.posterSecondText {
+  font-family: "Gothic A1";
+  font-size: 4.75rem;
+  font-weight: 800;
+  text-align: left;
+  color: white;
+}
+
+.speakerImg {
+  position: absolute;
+  right: 0;
+}
+
+.speakerImg img {
+  width: 240px;
+}
+
+.eventsTitle h2 {
+  font-size: 42px;
+  font-family: "Caveat";
+  font-weight: 700;
+  color: rgb(254, 38, 118);
+}
+.eventsTitle h1 {
+  font-family: "Gothic A1";
+  font-size: 50px;
+  font-weight: 900;
+}
+.eventsContainer {
+  padding: 100px 15px 60px 15px;
+  background: rgb(243, 240, 251);
+  background: var(--main-bg-color);
+  padding-bottom: 50px;
+}
+.paginationButton a {
+  width: 300px;
+  font-size: 18px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  /* font-weight: 900; */
+}
+
+
+@media (max-width: 900px) {
+  .posterSecondText{
+    font-size: 3rem;
+    text-align: center;
+  }
+  .posterFirstText{
+    text-align: center;
+  }
+}

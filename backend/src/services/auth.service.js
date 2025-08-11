@@ -5,7 +5,6 @@ const jwt = require("jsonwebtoken");
 const passportJwt = require("passport-jwt");
 // const JwtStrategy = passportJwt.Strategy;
 // const ExtractJwt = passportJwt.ExtractJwt;
-// const { db } = require("../model/user");
 const refreshToken = require("../model/refresh");
 const refreshTokenDb = require("../model/refresh");
 
@@ -15,7 +14,7 @@ const generateToken = async (payload) => {
   const accessToken = jwt.sign(payload, secretKey, { expiresIn: "3h" });
   const refreshDB = await refreshTokenDb.create({
     token: refreshToken,
-    user_id: payload._id,
+    user_id: payload._id, 
   });
   refreshDB
     .save()
@@ -41,8 +40,7 @@ const validateUser = async (user) => {
     const userLog = {
       _id: dbUser._id,
       email: dbUser.email,
-      name: dbUser.name,
-      surname: dbUser.surname,
+      vendor: dbUser.vendor,
       role: dbUser.userType,
     };
     return userLog;

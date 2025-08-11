@@ -1,12 +1,11 @@
 const PDFDocument = require("pdfkit");
 const fs = require("fs");
-const path = require("path");
 
-const generateTicket = (booking, res) => {
-  const ticketFileName = "ticket" + eventId + ".pdf";
-  const ticketPath = path.join("../bileta", ticketFileName);
+const generateTicket =  (booking, res) => {
+  const ticketFileName = "ticket" + booking._id + ".pdf";
   const doc = new PDFDocument();
-  doc.pipe(res);
+  const fileStream = fs.createWriteStream(ticketFileName)
+  doc.pipe(fileStream);
   res.setHeader(
     "Content-disposition",
     `attachment; filename=${ticketFileName}`
@@ -19,16 +18,10 @@ const generateTicket = (booking, res) => {
   doc.fontSize(16).text(`Total Amount: ${booking.total_amount}`);
 
   doc.end();
-  doc.on("end", () => {
-    // save the PDF file to disk
-    fs.writeFile(fileName, doc, (err) => {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log(`Saved booking details to ${fileName}`);
-      }
-    });
-  });
+  // doc.on("end", () => {
+    
+  // });
+  return fileStream;
 };
 
 module.exports = generateTicket;

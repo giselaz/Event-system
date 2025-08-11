@@ -5,71 +5,83 @@ import { useForm } from "react-hook-form";
 import FormGroup from "react-bootstrap/FormGroup";
 import InputGroup from "react-bootstrap/InputGroup";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
 import Error from "../Error";
 import Success from "../Success";
 import Register2 from "../../screens/Register2";
 import "../../styles/login.css";
 import { useState } from "react";
 import "animate.css";
+import { useGoogleLogin } from "@react-oauth/google";
+import { GoogleLogin } from "@react-oauth/google";
+import jwt_decode from "jwt-decode";
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import { signIn, signInGoogle } from "../../actions/auth";
 
 const Login = () => {
   let navigate = useNavigate();
 
   const [data, setData] = useState("");
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [showRegister, setShowRegister] = useState(false);
-  const [access_token, setAccessToken] = useState(null);
+
+  const dispatch = useDispatch();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  // const onChangeEmail = (e) => {
-  //   const email = e.target.value;
-  //   setEmail(email);
-  // };
+  const googleLogin = useGoogleLogin({
+    onSuccess: async (respose) => {
+      try {
+        const res = await axios.get(
+          "https://www.googleapis.com/oauth2/v3/userinfo",
+          {
+            headers: {
+              Authorization: `Bearer ${respose.access_token}`,
+            },
+          }
+        );
 
-  // const onChangePassword = (e) => {
-  //   const password = e.target.value;
-  //   setPassword(password);
-  // };
-
-  async function handleGoogleSignIn() {
-    const authWindow = window.open("/auth/google", "_blank");
-    window.addEventListener("message", (event) => {
-      if (!event.data.access_token) {
-        return;
+        console.log(res.data);
+      } catch (err) {
+        console.log(err);
       }
-      setAccessToken(event.data.access_token);
-    });
+    },
+  });
 
-    // Close the auth window
-    authWindow.close();
-  }
+  const googleSuccess = async (res) => {
+    const accessToken = res?.credential;
 
-  async function onSubmit(data) {
-    setData(JSON.stringify(data));
+    var decoded = await jwt_decode(res?.credential);
+    const { given_name, family_name, email } = decoded;
+
+    const user = {
+      name: given_name,
+      surname: family_name,
+      email,
+    };
 
     try {
-      const result = (await axios.post("/auth/login", data)).data;
+      dispatch(signInGoogle(accessToken, navigate));
+      // dispatch(signIn());
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const googleError = () => {
+    console.log("Login Failed");
+  };
+  async function onSubmit(formData) {
+    setData(JSON.stringify(formData));
 
-      localStorage.setItem("currentUser", JSON.stringify(result.access_token));
-      localStorage.setItem(
-        "refresh_token",
-        JSON.stringify(result.refreshToken)
-      );
-      localStorage.setItem("userData", JSON.stringify(result.user));
+    try {
+      dispatch(signIn(formData, navigate));
       setSuccess("Logimi u krye me sukses");
-      if (result.user.role === "admin") {
-        navigate("/admin");
-      } else if (result.user.role === "user") {
-        navigate("/profile");
-      }
     } catch (error) {
       console.log(error);
       setError("Invalid Credentials");
@@ -104,7 +116,9 @@ const Login = () => {
           style={{ height: "100vh" }}
         >
           <Register2 className="animate__animated animate__fadeInDown register__login" />
-          <Link onClick={handleLoginUI}>Already have an account?</Link>
+          <Link className="Login-signup-link" onClick={handleLoginUI}>
+            Already have an account?
+          </Link>
         </Container>
       ) : (
         <Container
@@ -122,10 +136,16 @@ const Login = () => {
             </Card.Title>
             <Card.Body className="px-lg-5 py-lg-5">
               <div className="bs">
-                <button onClick={handleGoogleSignIn}>
-                  Sign in with Google
-                </button>
-                <span> OR</span>
+                <div
+                  className="google-login d-flex justify-content-center"
+                  style={{ marginBottom: "1rem" }}
+                >
+                  <GoogleLogin
+                    onSuccess={googleSuccess}
+                    onError={googleError}
+                  />
+                </div>
+
                 <Form onSubmit={handleSubmit(onSubmit)}>
                   <FormGroup>
                     <InputGroup className="input-group-alternative mb-5">
