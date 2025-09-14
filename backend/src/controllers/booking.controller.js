@@ -1,16 +1,16 @@
 const BookingService = require("../services/booking.service");
 const PDFDocument = require("pdfkit");
-const fs = require("fs"); 
+const fs = require("fs");
 const transporter = require("../utils/transporter");
 const generateTicket = require("../utils/generatePdf");
 const createBooking = async (req, res) => {
-  await BookingService.bookLiveEvent( 
+  await BookingService.bookLiveEvent(
     req.user,
     req.body.id,
     req.body.quantity,
     req.body.token
   ).then((booking) => {
-    const fileStream = generateTicket(booking,res);
+    const fileStream = generateTicket(booking, res);
     fileStream.on("finish", () => {
       console.log(`Saved booking details to ${ticketFileName}`);
       const mailOptions = {
@@ -62,7 +62,8 @@ const bookOnlineEvent = async (req, res) => {
       if (booking.event.event_type == "live") {
         mailOptions.html = "<p> Thank you for your participation </p>";
       } else {
-        mailOptions.html = `<p> Thank you for your participation.</p> <br> <p>Here is the link to the event: <a href="${booking.event.event_link}">${booking.event.event_link}</a></p>`;
+        mailOptions.html = `<p> Thank you for your participation.</p> <br> <p>Here is the link to the event: 
+        <a href="${booking.event.event_link}">${booking.event.event_link}</a></p>`;
       }
       transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
@@ -76,7 +77,9 @@ const bookOnlineEvent = async (req, res) => {
   } catch (error) {
     if (error.message === "event has ended") {
       res.status(400).json({ message: "Event has ended" });
-    } else if (error.message === "Your participation has already been confirmed") {
+    } else if (
+      error.message === "Your participation has already been confirmed"
+    ) {
       res
         .status(400)
         .json({ message: "Your participation has already been confirmed" });

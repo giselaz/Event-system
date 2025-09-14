@@ -42,14 +42,14 @@ passport.use(
         const user = UserModel.findOne({ email });
         if (!user) {
           return done(null, false, { message: "User not found" });
-
-          const validate = await user.isValidPassword(password);
-
-          if (!validate) {
-            return done(null, false, { message: "Wrong password" });
-          }
-          return done(null, user);
         }
+
+        const validate = await user.isValidPassword(password);
+
+        if (!validate) {
+          return done(null, false, { message: "Wrong password" });
+        }
+        return done(null, user);
       } catch (error) {
         done(error);
       }

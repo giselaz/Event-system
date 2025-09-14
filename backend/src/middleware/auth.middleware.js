@@ -1,6 +1,5 @@
 const jwt = require("jsonwebtoken");
-const passportJWT = require("passport-jwt");
-const UserModel = require("../model/user");
+ 
 
 const verifyToken = async (req, res, next) => {
   try {

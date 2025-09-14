@@ -3,7 +3,6 @@ const {
   validateCreatedEvent,
   validateUpdatedEvent,
 } = require("../validations/event.validations");
-const moment = require("moment");
 const path = require("path");
 
 exports.addEvent = (req, res) => {

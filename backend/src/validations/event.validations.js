@@ -1,5 +1,4 @@
 const Joi = require("joi");
-const { create } = require("../model/event");
 
 const validateCreatedEvent = (body) => {
   const schema = Joi.object({
@@ -10,14 +9,14 @@ const validateCreatedEvent = (body) => {
     start_date: Joi.date()
       .required()
       .greater(Date.now() + 48 * 60 * 60 * 1000),
-    end_date: Joi.date().required().min(Joi.ref("start_date")),
+    end_date: Joi.date().min(Joi.ref("start_date")),
     location: Joi.string().min(3),
     event_link: Joi.string(),
-    departament: Joi.string(),
     image: Joi.string().regex(/.(jpg|jpeg|png|gif)$/i),
     created_By: Joi.string(),
     vendor: Joi.string(),
-  });
+    category: Joi.array().items(Joi.string()).required(),
+  }).min(1);
 
   return schema.validate(body);
 };
@@ -31,7 +30,6 @@ const validateUpdatedEvent = (body) => {
     end_date: Joi.date().required().min(Joi.ref("start_date")),
     location: Joi.string().min(3),
     event_link: Joi.string(),
-    departament: Joi.string(),
     image: Joi.string().regex(/.(jpg|jpeg|png|gif)$/i),
   });
   return schema.validate(body);
