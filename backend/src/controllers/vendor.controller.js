@@ -15,7 +15,7 @@ exports.createVendor = async (req, res) => {
   }
 
   const vendor = await VendorService.createVendor(vendorData);
-  res.status(200).json({ message: "vendor successfully created", vendor });
+  res.status(200).json({ message: "vendor successfully created", vendor: vendor.name });
 };
 
 exports.updateVendor = async (req, res) => {

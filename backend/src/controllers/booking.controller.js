@@ -55,14 +55,14 @@ const bookOnlineEvent = async (req, res) => {
       const mailOptions = {
         from: "test199tests@gmail.com",
         to: `${req.user.email}`,
-        subject: "Konfirmimi i Pjesemarrjes",
+        subject: "Confirmation of your booking",
 
-        text: `"Pershendetje ${req.user.name},`,
+        text: `"Hello ${req.user.name},`,
       };
       if (booking.event.event_type == "live") {
-        mailOptions.html = "<p> Faleminderit per pjesemarrjen tuaj </p>";
+        mailOptions.html = "<p> Thank you for your participation </p>";
       } else {
-        mailOptions.html = `<p> Faleminderit per pjesemarrjen tuaj.</p> <br> <p>Here is the link to the event: <a href="${booking.event.event_link}">${booking.event.event_link}</a></p>`;
+        mailOptions.html = `<p> Thank you for your participation.</p> <br> <p>Here is the link to the event: <a href="${booking.event.event_link}">${booking.event.event_link}</a></p>`;
       }
       transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
@@ -75,11 +75,11 @@ const bookOnlineEvent = async (req, res) => {
     });
   } catch (error) {
     if (error.message === "event has ended") {
-      res.status(400).json({ message: "Eventi ka mbaruar" });
-    } else if (error.message === "Pjesemarrja juaj eshte konfirmuar tashme") {
+      res.status(400).json({ message: "Event has ended" });
+    } else if (error.message === "Your participation has already been confirmed") {
       res
         .status(400)
-        .json({ message: "Pjesemarrja juaj eshte konfirmuar tashme" });
+        .json({ message: "Your participation has already been confirmed" });
     } else {
       res.status(500).json({ message: "Internal server error" });
     }
@@ -89,13 +89,10 @@ const bookOnlineEvent = async (req, res) => {
 const removeBooking = async (req, res) => {
   try {
     await BookingService.removeBooking(req.body.userId, req.params.eventId);
-    res.status(200).json({ message: "Pjesemarresi eshte fshire" });
+    res.status(200).json({ message: "Booking has been removed successfully" });
   } catch (err) {
     res.status(400).json({ message: err });
   }
 };
 
-// const cancelBooking = async (req,res)=>{
-
-// }
 module.exports = { createBooking, bookOnlineEvent, removeBooking };

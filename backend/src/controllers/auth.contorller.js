@@ -18,7 +18,7 @@ const userLogin = async (req, res) => {
       role: dBUser.role,
     }; 
     const token = jwt.sign(user, process.env.SECRET_KEY, { expiresIn: "3h" });
-    res.send(user);
+    res.send(token);
   } else {
     try {
       ValidateUser.validateLogin(req.body);
@@ -36,25 +36,6 @@ const userLogin = async (req, res) => {
   }
 };
 
-// const userLogin = async (req, res, next) => {
-//   passport.authenticate("login", async (err, user, info) => {
-//     try {
-//       if (err || !user) {
-//         const error = new Error("An error occurred");
-//         return next(error);
-//       }
-//       req.login(user, { session: false }, async (error) => {
-//         if (error) return next(error);
-
-//         const body = { _id: user._id, email: user.email, role: user.role };
-//         const token = jwt.sign({ user: body }, process.env.SECRET_KEY, {
-//           expiresIn: "3h",
-//         });
-//         return res.json({ token });
-//       });
-//     } catch (err) {}
-//   });
-// };
 
 const userLogOut = async (req, res) => {
   const refreshToken = req.header("refreshToken");

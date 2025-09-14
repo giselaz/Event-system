@@ -19,6 +19,11 @@ const addUserGoogle = async (req, res) => {
     if (!dBuser._id) {
       res.status(400).json({ message: "User with this email already exists" });
     } else {
+       sendConfirmationEmail(
+        dBuser.email,
+        dBuser.name,
+        dBuser._id
+      );
       res.json({
         message: "We just sent you an email with a link to verify your email.",
       });

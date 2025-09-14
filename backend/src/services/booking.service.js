@@ -1,4 +1,3 @@
-// const { ConnectionPoolClosedEvent } = require("mongodb");
 const { v4: uuid } = require("uuid");
 const Booking = require("../model/booking");
 const Event = require("../model/event");
@@ -41,9 +40,7 @@ const bookLiveEvent = async (userId, eventId, quantity, token) => {
           transactionid: uuid(),
         });
         booking.save().then(() => {
-          
           console.log("Paid booking created") 
-        
         });
        
         return booking.populate("event");
