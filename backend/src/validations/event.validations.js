@@ -11,6 +11,7 @@ const validateCreatedEvent = (body) => {
       .greater(Date.now() + 48 * 60 * 60 * 1000),
     end_date: Joi.date().min(Joi.ref("start_date")),
     location: Joi.string().min(3),
+    max_participants: Joi.number().min(1).required(),
     event_link: Joi.string(),
     image: Joi.string().regex(/.(jpg|jpeg|png|gif)$/i),
     created_By: Joi.string(),
@@ -31,6 +32,7 @@ const validateUpdatedEvent = (body) => {
     location: Joi.string().min(3),
     event_link: Joi.string(),
     image: Joi.string().regex(/.(jpg|jpeg|png|gif)$/i),
+    max_participants: Joi.number().min(1),
   });
   return schema.validate(body);
 };

@@ -32,9 +32,6 @@ const eventSchema = new mongoose.Schema({
     enum: ["online", "live"],
     required: true,
   },
-  max_participants: {
-    type: Number,
-  },
   fee: {
     type: Number,
     required: true,
@@ -67,7 +64,9 @@ const eventSchema = new mongoose.Schema({
       ref: "User",
     },
   ],
+
 });
+
 const Event = mongoose.model("Event", eventSchema);
 
 module.exports = Event;
