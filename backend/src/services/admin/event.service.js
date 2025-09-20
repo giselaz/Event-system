@@ -39,7 +39,7 @@ const getVendorEvents = async (vendorId) => {
   const events = await Event.find({ vendor: vendorId });
   return events;
 };
-const UpdateEvent = async (data, eventId) => {
+const updateEvent = async (data, eventId) => {
   const event = await Event.findOneAndUpdate({ id: eventId }, data, {
     new: true,
   });
@@ -110,7 +110,7 @@ const getEventImage = (eventId) => {
 module.exports = {
   createEvent,
   getEventsByUser,
-  UpdateEvent,
+  updateEvent,
   getEventDetails,
   activeEvents,
   getPastEvents,

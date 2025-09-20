@@ -3,9 +3,10 @@ const PDFDocument = require("pdfkit");
 const fs = require("fs");
 const transporter = require("../utils/transporter");
 const generateTicket = require("../utils/generatePdf");
+
 const createBooking = async (req, res) => {
   await BookingService.bookLiveEvent(
-    req.user,
+    req.user._id,
     req.body.id,
     req.body.quantity,
     req.body.token
