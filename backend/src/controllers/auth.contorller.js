@@ -23,19 +23,33 @@ const userLogin = async (req, res) => {
     try {
       ValidateUser.validateLogin(req.body);
       const tokens = await AuthService.logIn(req.body);
+     
       res
-        .header("Authorization", tokens.accessToken)
         .cookie("refreshToken", tokens.refreshToken, { httpOnly: true })
-        .cookie("accessToken", tokens.accessToken, { httpOnly: true });
       res.status(200).json({
         access_token: tokens.accessToken,
       });
     } catch (err) {
+       console.log(err)
       res.status(500).json({ message: "Internal Server error" });
     }
   }
 };
 
+const generateAccess  = async (req,res) =>{
+  const refreshToken = req.cookie.refreshToken;
+  try{
+    const accessToken = await AuthService.generateAccess(refreshToken);
+    if(!accessToken)
+    {
+      res.status(401).json({message:"Refresh Token expired"});
+    }
+  }catch(err)
+  {
+    res.status(500).json({message:"Internal server error"});
+  }
+
+}
 
 const userLogOut = async (req, res) => {
   const refreshToken = req.header("refreshToken");
@@ -47,4 +61,4 @@ const userLogOut = async (req, res) => {
 
   res.send({ message: "Refresh token deleted  successfully" });
 };
-module.exports = { userLogin, userLogOut };
+module.exports = { userLogin, userLogOut,generateAccess };
