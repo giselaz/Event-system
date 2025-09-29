@@ -1,17 +1,15 @@
 const { v4: uuid } = require("uuid");
 const Booking = require("../model/booking");
 const Event = require("../model/event");
-const User = require("../model/user");
 const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY);
-const Paricipant = require("../model/participant");
 
 const bookLiveEvent = async (userId, eventId, quantity, token) => {
   const event = await Event.findById(eventId);
   if (!event.active) {
     throw new Error("event has ended");
   }
-   if (event.fee == 0) {
-   bookFreeEvent(eventId,userId);
+  if (event.fee == 0) {
+    bookFreeEvent(eventId, userId);
   } else {
     try {
       const customer = await stripe.customers.create({
@@ -40,9 +38,9 @@ const bookLiveEvent = async (userId, eventId, quantity, token) => {
           transactionid: uuid(),
         });
         booking.save().then(() => {
-          console.log("Paid booking created") 
+          console.log("Paid booking created");
         });
-       
+
         return booking.populate("event");
       }
     } catch (error) {
@@ -51,7 +49,7 @@ const bookLiveEvent = async (userId, eventId, quantity, token) => {
   }
 };
 
-const bookFreeEvent =  (event,userId) => {
+const bookFreeEvent = (event, userId) => {
   const amount = 0;
   const booking = new Booking({
     event: event,
@@ -68,7 +66,7 @@ const bookFreeEvent =  (event,userId) => {
       console.log(err);
     });
   return booking;
-}
+};
 const bookOnlineEvent = async (userId, eventId) => {
   const event = await Event.findById(eventId);
   // const bookingUser = await Paricipant.findOne({
@@ -98,12 +96,11 @@ const bookOnlineEvent = async (userId, eventId) => {
 
 const removeBooking = async (userId, eventId) => {
   try {
-   const event = await Event.findById(eventId);
-   const userIndex = event.participants.indexOf(userId);
-   if(userIndex)
-   {
-    event.participants.splice(userIndex,userId);
-   }
+    const event = await Event.findById(eventId);
+    const userIndex = event.participants.indexOf(userId);
+    if (userIndex) {
+      event.participants.splice(userIndex, userId);
+    }
     await Booking.deleteOne({
       user: userId,
       event: eventId,
@@ -123,4 +120,9 @@ const addParticipant = async (eventId, userId) => {
     console.log(err);
   }
 };
-module.exports = { bookLiveEvent, bookOnlineEvent, removeBooking,addParticipant };
+module.exports = {
+  bookLiveEvent,
+  bookOnlineEvent,
+  removeBooking,
+  addParticipant,
+};

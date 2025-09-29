@@ -50,12 +50,12 @@ exports.getPastEvents = async (req, res) => {
 };
 
 exports.updateEvent = async (req, res) => {
-  const eventData = { ...req.body, logo: req.file.filename };
+  const eventData = { ...req.body, ...(req.file && { logo: req.file.filename }) };
   const { error, value } = validateUpdatedEvent(eventData);
   if (error) {
     res.status(400).json({ message: error.details[0].message });
   }
-  const event = await eventService.updateevent(eventData);
+  const event = await EventService.updateEvent(eventData);
   res.status(200).json({ message: "event successfully updated", event });
 };
 exports.deleteEvent = async (req, res) => {
