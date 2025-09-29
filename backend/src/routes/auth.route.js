@@ -8,5 +8,5 @@ route.delete("/logout", AuthController.userLogOut);
 route.get("/getUser", AuthMiddleware.authenticated, (req, res) =>
   res.send(req.user)
 );
-route.post('refresh-token',AuthController.generateAccess);
+route.post('/refresh-token',AuthController.generateAccess);
 module.exports = route;

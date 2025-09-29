@@ -17,5 +17,5 @@ route.get(
    AuthMiddleware.verifyToken,
   UserController.getAdminEvents
 );
-route.delete("/delete",UserController.deleteUser);
+// route.delete("/delete",UserController.deleteUser);
 module.exports = route;
