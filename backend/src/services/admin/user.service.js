@@ -25,6 +25,12 @@ const CreateUser = async (user) => {
     return responseUser;
   }
 };
+
+const deleteUser = async (email) =>{
+  const deletedUser =  await User.deleteOne({email});
+  return deletedUser.deletedCount > 0;
+
+}
 const createGoogleUser = async (user)=>{
   if (await User.findOne({ email: user.email })) {
     throw new Error("User already exist"); 
@@ -90,5 +96,6 @@ module.exports = {
   getAllBookings,
   getAdminEvents,
   verifyEmail,
-  createGoogleUser
+  createGoogleUser,
+  deleteUser
 };

@@ -1,11 +1,6 @@
 const bcrypt = require("bcrypt");
 const User = require("../model/user");
 const jwt = require("jsonwebtoken");
-// const passport = require("passport");
-const passportJwt = require("passport-jwt");
-// const JwtStrategy = passportJwt.Strategy;
-// const ExtractJwt = passportJwt.ExtractJwt;
-const refreshToken = require("../model/refresh");
 const refreshTokenDb = require("../model/refresh");
 
 const generateToken = async (payload) => {
@@ -48,29 +43,30 @@ const validateUser = async (user) => {
     throw new Error("User not authorized");
   }
 };
-// const authUser = async (email, password, done) => {
-//   const dbUser = await User.findOne({ email: email });
-//   if (!dbUser) {
-//     return done(null, false);
-//   } else if (dbUser && !bcrypt.compareSync(password, dbUser.password)) {
-//     return done(null, false);
-//   }
-//   return done(null, dbUser);
-// };
 
-const logOut = async (userId, refresh_Token) => {
+const logOut = async (userId, refresh_token) => {
   const secretKey = process.env.REFRESH_KEY;
-  const decodeToken = jwt.verify(refresh_Token, secretKey);
+  const decodeToken = jwt.verify(refresh_token, secretKey);
 
   if (typeof decodeToken === "string")
     throw new Error("error decoding refresh token");
   if (userId !== decodeToken.id)
     throw new Error("Auth and refresh token are not of the same user.");
 
-  await refreshToken.deleteMany({
+  await refreshTokenDb.deleteMany({
     user_id: userId,
-    token: refreshToken,
+    token: refresh_token,
   });
 };
 
-module.exports = { logIn, logOut };
+const generateAccess = async (refreshToken) =>{
+  const secretKey = process.env.REFRESH_KEY;
+  const decodeToken = jwt.verify(refreshToken,secretKey);
+    if (typeof decodeToken === "string"){
+    throw new Error("error decoding refresh token");
+  }
+  const accessToken = jwt.sign({id:decodeToken.id},REFRESH_KEY,{expiresIn:'3h'});
+  return accessToken;
+}
+
+module.exports = { logIn, logOut ,generateAccess};

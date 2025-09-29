@@ -37,13 +37,14 @@ const userLogin = async (req, res) => {
 };
 
 const generateAccess  = async (req,res) =>{
-  const refreshToken = req.cookie.refreshToken;
+  const refreshToken = req.cookies.refreshToken;
   try{
     const accessToken = await AuthService.generateAccess(refreshToken);
     if(!accessToken)
     {
       res.status(401).json({message:"Refresh Token expired"});
     }
+    return res.status(200).json({ access_token: accessToken })
   }catch(err)
   {
     res.status(500).json({message:"Internal server error"});

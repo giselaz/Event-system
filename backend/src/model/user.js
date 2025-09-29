@@ -26,18 +26,18 @@ const userSchema = new mongoose.Schema({
   isVerified:{
     type: Boolean,
   },
-  userType: {
+  role: {
     type: String,
     enum: ["user", "admin", "organizer","vendor"],
     default: "user",
   },
-  userRole: {
-    type: mongoose.Schema.ObjectId,
-    ref: "roles",
-    required: true,
-    default: "63ea0931adfa3d88e6553286",
-  }, 
-  // bookings: [{ type: mongoose.Schema.ObjectId, ref: "Booking",required:true }],
+  // userRole: {
+  //   type: mongoose.Schema.ObjectId,
+  //   ref: "roles",
+  //   required: true,
+  //   default: "63ea0931adfa3d88e6553286",
+  // }, 
+ 
 
   vendor: {
     type: mongoose.Schema.Types.ObjectId,

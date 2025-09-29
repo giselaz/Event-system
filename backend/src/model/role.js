@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const localMongoose = require("passport-local-mongoose");
 
 const roleSchema = new mongoose.Schema({
   name: {
