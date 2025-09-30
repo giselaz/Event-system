@@ -60,12 +60,13 @@ const logOut = async (userId, refresh_token) => {
 };
 
 const generateAccess = async (refreshToken) =>{
+
   const secretKey = process.env.REFRESH_KEY;
   const decodeToken = jwt.verify(refreshToken,secretKey);
     if (typeof decodeToken === "string"){
     throw new Error("error decoding refresh token");
   }
-  const accessToken = jwt.sign({id:decodeToken.id},REFRESH_KEY,{expiresIn:'3h'});
+  const accessToken = jwt.sign({id:decodeToken.id},process.env.SECRET_KEY,{expiresIn:'3h'});
   return accessToken;
 }
 

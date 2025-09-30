@@ -3,6 +3,7 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const path = require("path");
 const bodyParser = require("body-parser");
+const cookieParser = require('cookie-parser');
 const app = express();
 const job = require("./utils/cronjb");
 dotenv.config();
@@ -19,7 +20,26 @@ const port = process.env.PORT;
 // const EventService = require("./services/admin/event.service");
 // const verifyToken = require("./middleware/auth.middleware");
 app.use(express.json());
-app.use(cors());
+const allowedOrigins = [
+  "http://localhost:8080", // if using CRA
+  "https://your-frontend-domain.com" // production domain
+];
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      // allow requests with no origin (like mobile apps, curl, etc.)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.indexOf(origin) === -1) {
+        const msg = "The CORS policy for this site does not allow access from the specified origin.";
+        return callback(new Error(msg), false);
+      }
+      return callback(null, true);
+    },
+    credentials: true, // <--- allow cookies
+  })
+);
+app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use((req, res, next) => {
   console.log("Incoming request:", req.method, req.url);
