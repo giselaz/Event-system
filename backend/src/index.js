@@ -21,7 +21,8 @@ const port = process.env.PORT;
 // const verifyToken = require("./middleware/auth.middleware");
 app.use(express.json());
 const allowedOrigins = [
-  "http://localhost:8080", // if using CRA
+  "http://localhost:8081", // if using CRA
+   "http://localhost:8080", // if using CRA
   "https://your-frontend-domain.com" // production domain
 ];
 

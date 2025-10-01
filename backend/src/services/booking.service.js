@@ -3,51 +3,50 @@ const Booking = require("../model/booking");
 const Event = require("../model/event");
 const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY);
 
-const bookLiveEvent = async (userId, eventId, quantity, token) => {
+
+ const stripePayment = async (userEmail, eventId, quantity) => {
   const event = await Event.findById(eventId);
   if (!event.active) {
-    throw new Error("event has ended");
+    throw new Error("Event has ended");
   }
-  if (event.fee == 0) {
-    bookFreeEvent(eventId, userId);
-  } else {
-    try {
-      const customer = await stripe.customers.create({
-        email: token.email,
-        source: token.id,
-      });
 
-      const payment = await stripe.charges.create(
-        {
-          amount: quantity * event.fee * 100,
-          customer: customer.id,
-          currency: "ALL",
-          receipt_email: token.email,
-        },
-        {
-          idempotencyKey: uuid(),
-        }
-      );
+  if (event.fee === 0) {
+    return bookFreeEvent(eventId, userId);
+  }
 
-      if (payment) {
-        const booking = new Booking({
-          event: event,
-          user: userId,
-          total_amount: event.fee * quantity,
+  try {
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
+      mode: "payment",
+      line_items: [
+        {
+          price_data: {
+            currency: "EUR", 
+            product_data: {
+              name: event.title,
+              description: event.description,
+            },
+            unit_amount: event.fee * 100, // Stripe works in cents
+          },
           quantity,
-          transactionid: uuid(),
-        });
-        booking.save().then(() => {
-          console.log("Paid booking created");
-        });
+        },
+      ],
+      customer_email: userEmail, // you can pass user's email if you have it
+      success_url: `${process.env.CLIENT_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${process.env.CLIENT_URL}/cancel`,
+    });
 
-        return booking.populate("event");
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    return { id: session.id, url: session.url };
+  } catch (error) {
+    console.error("Stripe Session Error:", error);
+    throw new Error("Unable to create checkout session");
   }
 };
+
+const createBooking = (session) =>
+{
+
+}
 
 const bookFreeEvent = (event, userId) => {
   const amount = 0;
@@ -121,7 +120,7 @@ const addParticipant = async (eventId, userId) => {
   }
 };
 module.exports = {
-  bookLiveEvent,
+  stripePayment,
   bookOnlineEvent,
   removeBooking,
   addParticipant,

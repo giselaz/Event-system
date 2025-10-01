@@ -5,11 +5,10 @@ const transporter = require("../utils/transporter");
 const generateTicket = require("../utils/generatePdf");
 
 const createBooking = async (req, res) => {
-  await BookingService.bookLiveEvent(
-    req.user._id,
+  await BookingService.stripePayment(
+    req.user.email,
     req.body.id,
     req.body.quantity,
-    req.body.token
   ).then((booking) => {
     const fileStream = generateTicket(booking, res);
     fileStream.on("finish", () => {
