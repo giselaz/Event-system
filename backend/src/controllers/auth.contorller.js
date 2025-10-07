@@ -33,7 +33,7 @@ const userLogin = async (req, res) => {
       }); // available to all routes})
       res.status(200).json({
         access_token: tokens.accessToken,
-      });
+      }); 
     } catch (err) {
       console.log(err);
       res.status(500).json({ message: "Internal Server error" });

@@ -2,9 +2,9 @@ const { v4: uuid } = require("uuid");
 const Booking = require("../model/booking");
 const Event = require("../model/event");
 const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY);
+const webHookKey = process.env.STRIPE_WEBHOOK_KEY;
 
-
- const stripePayment = async (userEmail, eventId, quantity) => {
+const stripePayment = async (userEmail, eventId, quantity) => {
   const event = await Event.findById(eventId);
   if (!event.active) {
     throw new Error("Event has ended");
@@ -21,7 +21,7 @@ const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY);
       line_items: [
         {
           price_data: {
-            currency: "EUR", 
+            currency: "EUR",
             product_data: {
               name: event.title,
               description: event.description,
@@ -34,6 +34,11 @@ const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY);
       customer_email: userEmail, // you can pass user's email if you have it
       success_url: `${process.env.CLIENT_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${process.env.CLIENT_URL}/cancel`,
+      metadata: {
+        userEmail,
+        eventId,
+        quantity,
+      },
     });
 
     return { id: session.id, url: session.url };
@@ -43,10 +48,24 @@ const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY);
   }
 };
 
-const createBooking = (session) =>
-{
-
-}
+const createBooking = async (stripeEvent, signature) => {
+  let event;
+  try {
+    event = stripe.webhooks.constructEvent(stripeEvent, signature);
+  } catch (err) {
+    return err;
+  }
+  if(event.type === "checkout.session.completed")
+  {
+    const {event,user,quantity,total_amount} = session.metadata;
+    const session = event.data.object;
+    const booking = {
+     event,user,quantity,total_amount
+    }
+    await Booking.create(booking);
+    return 
+  }
+};
 
 const bookFreeEvent = (event, userId) => {
   const amount = 0;
@@ -121,6 +140,7 @@ const addParticipant = async (eventId, userId) => {
 };
 module.exports = {
   stripePayment,
+  createBooking,
   bookOnlineEvent,
   removeBooking,
   addParticipant,

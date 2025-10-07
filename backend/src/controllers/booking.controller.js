@@ -5,38 +5,39 @@ const transporter = require("../utils/transporter");
 const generateTicket = require("../utils/generatePdf");
 
 const createBooking = async (req, res) => {
-  await BookingService.stripePayment(
+  await BookingService.stripePayment( 
     req.user.email,
     req.body.id,
     req.body.quantity,
-  ).then((booking) => {
-    const fileStream = generateTicket(booking, res);
-    fileStream.on("finish", () => {
-      console.log(`Saved booking details to ${ticketFileName}`);
-      const mailOptions = {
-        from: "test199tests@gmail.com",
-        to: `${req.body.token.email}`,
-        subject: "Booking Details",
+  )
+  // .then((booking) => {
+  //   const fileStream = generateTicket(booking, res);
+  //   fileStream.on("finish", () => {
+  //     console.log(`Saved booking details to ${ticketFileName}`);
+  //     const mailOptions = {
+  //       from: "test199tests@gmail.com",
+  //       to: `${req.body.token.email}`,
+  //       subject: "Booking Details",
 
-        text: "Please find your booking details attached.",
-        attachments: [
-          {
-            filename: ticketFileName,
-            path: `./${ticketFileName}`,
-            contentType: "application/pdf",
-          },
-        ],
-      };
-      transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-          console.log(error);
-        } else {
-          console.log(`Email sent: ${info.response}`);
-        }
-      });
-    });
-    res.status(200).json(booking);
-  });
+  //       text: "Please find your booking details attached.",
+  //       attachments: [
+  //         {
+  //           filename: ticketFileName,
+  //           path: `./${ticketFileName}`,
+  //           contentType: "application/pdf",
+  //         },
+  //       ],
+  //     };
+  //     transporter.sendMail(mailOptions, (error, info) => {
+  //       if (error) {
+  //         console.log(error);
+  //       } else {
+  //         console.log(`Email sent: ${info.response}`);
+  //       }
+  //     });
+  //   });
+  //   res.status(200).json(booking);
+  // });
 };
 
 const bookOnlineEvent = async (req, res) => {
