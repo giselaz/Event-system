@@ -26,7 +26,7 @@ const userLogin = async (req, res) => {
 
       res.cookie("refreshToken", tokens.refreshToken, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production", // only send on HTTPS in prod
+        secure: true, // only send on HTTPS in prod
         sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
         maxAge: 7 * 24 * 60 * 60 * 1000, // expires in 7 days
         path: "/",
