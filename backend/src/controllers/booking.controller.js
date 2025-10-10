@@ -5,11 +5,20 @@ const transporter = require("../utils/transporter");
 const generateTicket = require("../utils/generatePdf");
 
 const createBooking = async (req, res) => {
-  await BookingService.stripePayment( 
-    req.user.email,
-    req.body.id,
-    req.body.quantity,
-  )
+  try{
+  const session = await BookingService.stripePayment( 
+      // req.user.email,
+      req.body.attendeeEmail,
+      req.body.eventId,
+      req.body.quantity,
+    );
+    console.log(session);
+    res.status(200).json({url:session.url})
+  }catch(err)
+  {
+    res.status(500).json({message:'Internal server error'})
+  }
+  
   // .then((booking) => {
   //   const fileStream = generateTicket(booking, res);
   //   fileStream.on("finish", () => {
@@ -40,6 +49,20 @@ const createBooking = async (req, res) => {
   // });
 };
 
+const bookingWebhook = async (req,res) =>{
+   const sig = req.headers["stripe-signature"];
+   const stripeEvent = req.body;
+   try{
+       const booking = BookingService.createBooking(sig,stripeEvent);
+       if(booking)
+       {
+        res.status(200).json({received:true})
+       }
+   }catch(err)
+   {
+      res.status(500).json({message:"Failed to create booking"});
+   }
+}
 const bookOnlineEvent = async (req, res) => {
   try {
     const booking = await BookingService.bookOnlineEvent(
@@ -99,4 +122,4 @@ const removeBooking = async (req, res) => {
   }
 };
 
-module.exports = { createBooking, bookOnlineEvent, removeBooking };
+module.exports = { createBooking, bookOnlineEvent, removeBooking,bookingWebhook };

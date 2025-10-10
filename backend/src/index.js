@@ -15,6 +15,7 @@ const BookingRoute = require("./routes/booking.route");
 const RoleRoute = require("./routes/role.route");
 const EventRoute = require('./routes/event.routes');
 const VendorRoute = require('./routes/vendor.route');
+const StripeVendor = require('./routes/stripe.route')
 const Dbconnect = require("./utils/db");
 const port = process.env.PORT;
 // const EventService = require("./services/admin/event.service");
@@ -31,6 +32,7 @@ app.use(
     credentials: true, // <--- allow cookies
   })
 );
+app.use('api/stripe',StripeVendor);
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use((req, res, next) => {

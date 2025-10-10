@@ -2,14 +2,13 @@ const { v4: uuid } = require("uuid");
 const Booking = require("../model/booking");
 const Event = require("../model/event");
 const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY);
-const webHookKey = process.env.STRIPE_WEBHOOK_KEY;
+const webhookKey = process.env.STRIPE_WEBHOOK_KEY;
 
 const stripePayment = async (userEmail, eventId, quantity) => {
   const event = await Event.findById(eventId);
   if (!event.active) {
     throw new Error("Event has ended");
   }
-
   if (event.fee === 0) {
     return bookFreeEvent(eventId, userId);
   }
@@ -51,7 +50,7 @@ const stripePayment = async (userEmail, eventId, quantity) => {
 const createBooking = async (stripeEvent, signature) => {
   let event;
   try {
-    event = stripe.webhooks.constructEvent(stripeEvent, signature);
+    event = stripe.webhooks.constructEvent(stripeEvent, signature,webhookKey);
   } catch (err) {
     return err;
   }
@@ -62,8 +61,8 @@ const createBooking = async (stripeEvent, signature) => {
     const booking = {
      event,user,quantity,total_amount
     }
-    await Booking.create(booking);
-    return 
+     return await Booking.create(booking);
+    
   }
 };
 
