@@ -14,6 +14,7 @@ const stripePayment = async (userEmail, eventId, quantity) => {
   }
 
   try {
+
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       mode: "payment",
@@ -22,7 +23,7 @@ const stripePayment = async (userEmail, eventId, quantity) => {
           price_data: {
             currency: "EUR",
             product_data: {
-              name: event.title,
+              name: event.name,
               description: event.description,
             },
             unit_amount: event.fee * 100, // Stripe works in cents
@@ -31,7 +32,7 @@ const stripePayment = async (userEmail, eventId, quantity) => {
         },
       ],
       customer_email: userEmail, // you can pass user's email if you have it
-      success_url: `${process.env.CLIENT_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
+      success_url: `${process.env.CLIENT_URL}/success`,
       cancel_url: `${process.env.CLIENT_URL}/cancel`,
       metadata: {
         userEmail,
